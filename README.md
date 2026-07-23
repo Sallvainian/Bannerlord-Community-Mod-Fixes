@@ -14,6 +14,20 @@ archives, or local game installations.
 | Relentless Smith - Banner Kings Redux Compatibility | 1.0.1 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/relentless-smith-bk-redux-v1.0.1/Relentless-Smith-BK-Redux-Compatibility-v1.0.1.zip) |
 | Captivity Events (Updated 1.4.7) | 1.0.1 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/captivity-events-1.4.7-v1.0.1/Captivity-Events-Updated-1.4.7-v1.0.1.zip) |
 
+### Requirements and original mods
+
+All four releases target Mount & Blade II: Bannerlord `v1.4.7`. The table lists
+the direct mod dependencies declared or targeted by each release; Bannerlord's
+standard game modules are omitted. Follow the linked projects for any
+additional requirements they declare.
+
+| Mod | Direct mod dependencies | Original and upstream mods |
+| --- | --- | --- |
+| Banner Kings Redux - Diplomacy Compatibility | [Bannerlord.Harmony](https://www.nexusmods.com/mountandblade2bannerlord/mods/2006) `v2.4.2`<br>[Banner Kings Redux](https://github.com/GIO443/bannerlord-banner-kings-redux/releases/tag/v1.9.33.5) `v1.9.33.5`<br>[Diplomacy Fork](https://github.com/adwitkow/Bannerlord.Diplomacy/releases/tag/v1.4.1.0) `v1.4.1.0` | [Banner Kings Redux by GIO443](https://github.com/GIO443/bannerlord-banner-kings-redux)<br>[Diplomacy Fork](https://github.com/adwitkow/Bannerlord.Diplomacy)<br>[Original Banner Kings](https://www.nexusmods.com/mountandblade2bannerlord/mods/3826)<br>[Original Diplomacy by the Diplomacy Team](https://www.nexusmods.com/mountandblade2bannerlord/mods/832) |
+| Better Troop HUD - Bannerlord 1.4.7 Compatibility Port | [Bannerlord.Harmony](https://www.nexusmods.com/mountandblade2bannerlord/mods/2006) `v2.2.2+`<br>[ButterLib](https://www.nexusmods.com/mountandblade2bannerlord/mods/2018) `v2.8.0+`<br>[UIExtenderEx](https://www.nexusmods.com/mountandblade2bannerlord/mods/2102) `v2.8.0+`<br>[Mod Configuration Menu](https://www.nexusmods.com/mountandblade2bannerlord/mods/612) `v5.7.1+` | [Original Better Troop HUD by Haarrdy](https://github.com/Haarrdy/MB-BetterTroopHUD) |
+| Relentless Smith - Banner Kings Redux Compatibility | [Bannerlord.Harmony](https://www.nexusmods.com/mountandblade2bannerlord/mods/2006) `v2.4.2`<br>[Banner Kings Redux](https://github.com/GIO443/bannerlord-banner-kings-redux/releases/tag/v1.9.33.5) `v1.9.33.5`<br>[Relentless Smith Concise](https://steamcommunity.com/sharedfiles/filedetails/?id=3637912777) `v1.0.4` | [Original Relentless Smith Concise by dirty kebab](https://steamcommunity.com/sharedfiles/filedetails/?id=3637912777)<br>[Banner Kings Redux by GIO443](https://github.com/GIO443/bannerlord-banner-kings-redux)<br>[Original Banner Kings](https://www.nexusmods.com/mountandblade2bannerlord/mods/3826) |
+| Captivity Events (Updated 1.4.7) | [Bannerlord.Harmony](https://www.nexusmods.com/mountandblade2bannerlord/mods/2006) `v2.4.2`<br>Optional: [Mod Configuration Menu](https://www.nexusmods.com/mountandblade2bannerlord/mods/612) `v5.11.4+` | [Original Captivity Events by TheBadListener](https://www.nexusmods.com/mountandblade2bannerlord/mods/1226) |
+
 ## Included projects
 
 | Project | Version | Target combination | Repository status |
@@ -26,19 +40,11 @@ archives, or local game installations.
 These targets describe the preserved source snapshots. They are not a promise
 of compatibility with later game or dependency releases.
 
-## External dependencies
+## Dependency policy
 
-Dependencies are not vendored. Obtain them from their respective projects:
-
-- [Bannerlord.Harmony](https://github.com/BUTR/Bannerlord.Harmony)
-- [Banner Kings Redux](https://github.com/GIO443/bannerlord-banner-kings-redux)
-- [Diplomacy Fork](https://github.com/adwitkow/Bannerlord.Diplomacy)
-- [Better Troop HUD upstream](https://github.com/Haarrdy/MB-BetterTroopHUD)
-- [Relentless Smith Concise on Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3637912777)
-- [Captivity Events on Nexus Mods](https://www.nexusmods.com/mountandblade2bannerlord/mods/1226)
-
-Better Troop HUD also declares ButterLib, UIExtenderEx, and Mod Configuration
-Menu dependencies in its `SubModule.xml`.
+Dependencies are not vendored in this source repository. Obtain them from the
+linked projects in the requirements table above and respect their authors'
+licenses and distribution terms.
 
 ## Building
 
