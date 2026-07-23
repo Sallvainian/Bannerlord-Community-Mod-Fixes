@@ -5,7 +5,7 @@ small, auditable repairs on current game builds. This repository intentionally
 does not track compiled mod DLLs, game assemblies, dependency DLLs, release
 archives, or local game installations.
 
-## Current downloads
+## Mod List
 
 | Mod | Current version | Direct download |
 | --- | ---: | --- |
