@@ -8,7 +8,7 @@ archives, or local game installations.
 ## Mod List
 
 | Mod | Current version | Direct download |
-| --- | ---: | --- |
+| --- | :--- | --- |
 | Banner Kings Redux - Diplomacy Compatibility | 2.1.0 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/bk-diplomacy-v2.1.0/Banner-Kings-Redux-Diplomacy-Compatibility-v2.1.0.zip) |
 | Better Troop HUD - Bannerlord 1.4.7 Compatibility Port | 1.1.0 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/better-troop-hud-v1.1.0/Better-Troop-HUD-1.4.7-v1.1.0.zip) |
 | Relentless Smith - Banner Kings Redux Compatibility | 1.0.1 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/relentless-smith-bk-redux-v1.0.1/Relentless-Smith-BK-Redux-Compatibility-v1.0.1.zip) |
