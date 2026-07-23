@@ -1,38 +1,44 @@
 # Captivity Events (Updated 1.4.7)
 
-Standalone compatibility and safety add-on for Captivity Events
-`v1.4.5.1400` on Mount & Blade II: Bannerlord `v1.4.7`.
+Source for the compatibility and safety layer embedded in the consolidated
+Captivity Events `v1.4.7.2` release for Mount & Blade II: Bannerlord `v1.4.7`.
 
-**This is not a full Captivity Events fork, replacement, or content package.**
-It requires the original `zCaptivityEvents` module and contains none of its
-events, images, source files, or binaries.
+End users install one `zCaptivityEvents` module from the release ZIP. They do
+not install or enable a separate `CaptivityEvents.147Fix` module. The standalone
+manifest in this source directory exists only for development and testing.
+
+The repository does not duplicate Captivity Events' events, images, or
+binaries. Those upstream files remain under their original terms and are
+included only in the consolidated release package.
 
 ## What it changes
 
-- Moves Captivity Events' successful-initialization guard ahead of its
-  `Harmony.PatchAll()` call so the same patches are not installed twice.
 - Replaces three destructive `CharacterObject` null fallbacks with diagnostics
   and non-mutating fallback values. Missing equipment, culture, or upgrade
   targets no longer randomize the player, disable a hero, pause campaign time,
   or destroy every `CustomPartyCE_` party.
 - Replaces the every-mission-tick image-atlas reload postfix with a reload that
   occurs only when mission UI categories transition into the loaded state.
+- Resolves the exact Bannerlord `CharacterObject` getters instead of using an
+  ambiguous inherited-property lookup.
 
 The add-on uses checked runtime contracts and restores the original Captivity
 Events patches if a replacement cannot be installed safely.
 
-## Installation order
+## Installation
 
-Install Captivity Events separately. Use a compiled package of this add-on and
-load it immediately after `zCaptivityEvents`. Do not install this source tree
-directly into Bannerlord's `Modules` directory.
+Extract the consolidated release into Bannerlord's `Modules` directory and
+enable the single `zCaptivityEvents` module. Do not install this source tree
+directly and do not combine the consolidated release with the old standalone
+safety-fix ZIP.
 
 ## Building
 
 Set `BANNERLORD_GAME_DIR` to a Bannerlord v1.4.7 installation and build
 `Source/CaptivityEvents.147Fix/CaptivityEvents.147Fix.csproj` in Release
-configuration. Captivity Events itself is discovered at runtime and is not a
-compile-time or bundled repository dependency.
+configuration. Embed the resulting DLL as the second submodule inside the
+updated `zCaptivityEvents` package. Captivity Events itself is discovered at
+runtime and is not a compile-time repository dependency.
 
 ## License and credits
 

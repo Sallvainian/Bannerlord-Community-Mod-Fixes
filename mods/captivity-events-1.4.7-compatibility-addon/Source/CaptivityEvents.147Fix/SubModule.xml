@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/SubModule.xsd">
   <Id value="CaptivityEvents.147Fix" />
   <Name value="Captivity Events - Bannerlord 1.4.7 Safety Fix" />
-  <Version value="v1.0.0" />
+  <Version value="v1.0.1" />
   <Official value="false" />
   <DefaultModule value="false" />
   <ModuleCategory value="Singleplayer" />
