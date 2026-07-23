@@ -1,4 +1,4 @@
-# Captivity Events (Updated 1.4.7) Compatibility Add-on
+# Captivity Events (Updated 1.4.7)
 
 Standalone compatibility and safety add-on for Captivity Events
 `v1.4.5.1400` on Mount & Blade II: Bannerlord `v1.4.7`.
