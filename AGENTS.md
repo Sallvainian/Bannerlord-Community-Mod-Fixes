@@ -91,4 +91,3 @@ check unless the user explicitly authorizes that exact action.
   version, archive name, and release tag consistent.
 - Preserve dependency and original-author links in the root README and release
   notes.
-

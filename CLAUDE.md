@@ -30,4 +30,3 @@ fix(bk-diplomacy): restore reward hooks
 ci: update GitHub release packaging
 chore: clean obsolete repository metadata
 ```
-
