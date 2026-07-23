@@ -22,12 +22,18 @@ on:
         description: Semantic release version, for example 1.0.1
         required: true
         type: string
+      publish_nexus:
+        description: Publish the resulting GitHub release to Nexus Mods
+        required: true
+        default: true
+        type: boolean
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
-  group: github-release-${{ github.ref_name || inputs.target }}
+  group: github-release-${{ github.event_name == 'workflow_dispatch' && inputs.target || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -113,6 +119,24 @@ jobs:
 
           if ($LASTEXITCODE -ne 0) {
             throw "GitHub release publishing failed for $tag."
+          }
+
+      - name: Dispatch Nexus Mods publication
+        if: github.event_name == 'push' || inputs.publish_nexus
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = '${{ steps.asset.outputs.release_tag }}'
+
+          gh workflow run publish-nexus.yml `
+            --repo $env:GITHUB_REPOSITORY `
+            --ref '${{ github.event.repository.default_branch }}' `
+            --field "release_tag=$tag"
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to dispatch Nexus Mods publication for $tag."
           }
 
       - name: Report published artifact
