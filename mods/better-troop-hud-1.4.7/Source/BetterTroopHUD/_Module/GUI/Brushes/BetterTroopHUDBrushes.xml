@@ -1,0 +1,347 @@
+﻿<Brushes>
+    <Brush Name="BetterTroopHUD.TroopHealthBar.Icon">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="hud_party_icon"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopHealthBar.Frame">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\health_bar_frame"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopHealthBar.Canvas">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\hero_canvas"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopHealthBar.Fill">
+        <Layers>
+            <BrushLayer Name="DefaultFill" Sprite="mission_health_bar_fill_9" Color="#FFFFFFFF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopHealthBar.FillChange">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_9" Color="#FBB1B1FF"
+                        SaturationFactor="-65" ValueFactor="50"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopHealthBar.FillGlow">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\health_bar_fill_glow"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopHealthBar.HighestHealthFill">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#DA7B72FF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopHealthBar.HealthMarker">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#FFF0CCFF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.Icon">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\mount_icon"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.Frame">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\horse_frame"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.Canvas">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\horse_canvas"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.Fill">
+        <Layers>
+            <BrushLayer Name="DefaultFill" Sprite="mission_health_bar_fill_small_9" Color="#FFFFFFFF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.FillChange">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#FBB1B1FF"
+                        SaturationFactor="-65" ValueFactor="50"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.FillGlow">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\health_bar_fill_glow_small"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.HighestHealthFill">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#DA7B72FF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopMountHealthBar.HealthMarker">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#FFF0CCFF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.Icon">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\shield_icon"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.Frame">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\shield_frame"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.Canvas">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\shield_canvas"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.Fill">
+        <Layers>
+            <BrushLayer Name="DefaultFill" Sprite="mission_health_bar_fill_small_9" HueFactor="27"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.FillChange">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#FBB1B1FF"
+                        SaturationFactor="-65" ValueFactor="50"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.FillGlow">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\health_bar_fill_glow_small" HueFactor="27"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.HighestHealthFill">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#BC9262FF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopShieldHealthBar.HealthMarker">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#FFF0CCFF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopArrowCountBar.Icon">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="hud_ammunition_icon"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopArrowCountBar.Frame">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\shield_frame"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopArrowCountBar.Canvas">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="General\Mission\shield_canvas"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopArrowCountBar.Fill">
+        <Layers>
+            <BrushLayer Name="DefaultFill" Sprite="mission_health_bar_fill_small_9" HueFactor="27"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopArrowCountBar.FillChange">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#FBB1B1FF"
+                        SaturationFactor="-65" ValueFactor="50"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopArrowCountBar.HighestHealthFill">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#BC9262FF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+
+    <Brush Name="BetterTroopHUD.TroopArrowCountBar.HealthMarker">
+        <Layers>
+            <BrushLayer Name="Default" Sprite="mission_health_bar_fill_damage_small_9" Color="#FFF0CCFF"/>
+        </Layers>
+        <Styles>
+            <Style Name="Default">
+                <BrushLayer Name="Default"/>
+            </Style>
+        </Styles>
+    </Brush>
+</Brushes>
+    

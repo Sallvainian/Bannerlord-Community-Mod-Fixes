@@ -1,0 +1,534 @@
+﻿<Prefab>
+    <Constants>
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Icon.Width"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Icon" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Icon.Height"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Icon" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Frame.Width"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Frame" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Frame.Height"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Frame" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Canvas.Width"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Canvas" BrushLayer="Default" BrushValueType="Width"
+                  Additive="5"/>
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Canvas.Height"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Canvas" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Fill.Width"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Fill" BrushLayer="DefaultFill" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopHealthBar.Fill.Height"
+                  BrushName="BetterTroopHUD.TroopHealthBar.Fill" BrushLayer="DefaultFill" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopHealthBar.FillGlow.Width"
+                  BrushName="BetterTroopHUD.TroopHealthBar.FillGlow" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopHealthBar.FillGlow.Height"
+                  BrushName="BetterTroopHUD.TroopHealthBar.FillGlow" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Icon.Width"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Icon" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Icon.Height"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Icon" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Frame.Width"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Frame" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Frame.Height"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Frame" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Canvas.Width"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Canvas" BrushLayer="Default" BrushValueType="Width"
+                  Additive="5"/>
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Canvas.Height"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Canvas" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Fill.Width"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Fill" BrushLayer="DefaultFill" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.Fill.Height"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.Fill" BrushLayer="DefaultFill"
+                  BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.FillGlow.Width"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.FillGlow" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopMountHealthBar.FillGlow.Height"
+                  BrushName="BetterTroopHUD.TroopMountHealthBar.FillGlow" BrushLayer="Default"
+                  BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Icon.Width"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Icon" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Icon.Height"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Icon" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Frame.Width"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Frame" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Frame.Height"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Frame" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Canvas.Width"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Canvas" BrushLayer="Default" BrushValueType="Width"
+                  Additive="5"/>
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Canvas.Height"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Canvas" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Fill.Width"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Fill" BrushLayer="DefaultFill"
+                  BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.Fill.Height"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.Fill" BrushLayer="DefaultFill"
+                  BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.FillGlow.Width"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.FillGlow" BrushLayer="Default"
+                  BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopShieldHealthBar.FillGlow.Height"
+                  BrushName="BetterTroopHUD.TroopShieldHealthBar.FillGlow" BrushLayer="Default"
+                  BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.Icon.Width"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Icon" BrushLayer="Default" BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.Icon.Height"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Icon" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TopMostTroopArrowCountBar.Frame.Width"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Frame" BrushLayer="Default" BrushValueType="Width"
+                  MultiplyResult="0.8"/>
+        <Constant Name="BetterTroopHUD.ShieldPosTroopArrowCountBar.Frame.Width"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Frame" BrushLayer="Default" BrushValueType="Width"
+                  MultiplyResult="1"/>
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.Frame.Height"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Frame" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TopMostTroopArrowCountBar.Canvas.Width"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Canvas" BrushLayer="Default" BrushValueType="Width"
+                  MultiplyResult="0.8" Additive="5"/>
+        <Constant Name="BetterTroopHUD.ShieldPosTroopArrowCountBar.Canvas.Width"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Canvas" BrushLayer="Default" BrushValueType="Width"
+                  MultiplyResult="1" Additive="5"/>
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.Canvas.Height"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Canvas" BrushLayer="Default" BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.Fill.Width"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Fill" BrushLayer="DefaultFill"
+                  BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.Fill.Height"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.Fill" BrushLayer="DefaultFill"
+                  BrushValueType="Height"/>
+
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.FillGlow.Width"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.FillGlow" BrushLayer="Default"
+                  BrushValueType="Width"/>
+        <Constant Name="BetterTroopHUD.TroopArrowCountBar.FillGlow.Height"
+                  BrushName="BetterTroopHUD.TroopArrowCountBar.FillGlow" BrushLayer="Default"
+                  BrushValueType="Height"/>
+
+    </Constants>
+
+    <Window>
+        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+            <Children>
+                <!-- Troop Arrow Count Info (Top position) -->
+                <TroopHealthWidget Id="TopMostTroopArrowCountWidget" Health="@ArrowCountMedianPrc"
+                                   MaxHealth="@MaxBarPrc"
+                                   HighestHealthValue="@ArrowCountMaxPrc"
+                                   BottomMarkerValue="@ArrowCountMedianLowHalfPrc"
+                                   TopMarkerValue="@ArrowCountMedianHighHalfPrc"
+                                   ShowMarkers="@ShowWidgetMarkers"
+                                   ShowHealthBar="@ShowTopMostTroopArrowCountBar"
+                                   HealthBar="Canvas\FillBar"
+                                   WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                   SuggestedWidth="!BetterTroopHUD.TopMostTroopArrowCountBar.Frame.Width"
+                                   SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Frame.Height"
+                                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   MarginRight="487" MarginBottom="143"
+                                   HealthDropContainer="Canvas\HealthDropContainer"
+                                   HealthDropBrush="BetterTroopHUD.TroopArrowCountBar.FillChange"
+                                   HighestHealthFillBrush="BetterTroopHUD.TroopArrowCountBar.HighestHealthFill"
+                                   HealthMarkerBrush="BetterTroopHUD.TroopArrowCountBar.HealthMarker"
+                                   TroopWidgetContainer="Canvas\TroopWidgetContainer">
+                    <Children>
+                        <Widget Id="Canvas" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TopMostTroopArrowCountBar.Canvas.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Canvas.Height"
+                                HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Sprite="General\Mission\shield_canvas">
+                            <Children>
+                                <Widget Id="HealthDropContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginRight="15" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                                <FillBarWidget Id="FillBar" ClipContents="true"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="Fixed"
+                                               SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Fill.Height"
+                                               VerticalAlignment="Center" PositionYOffset="-2"
+                                               IsVertical="false"
+                                               MarginLeft="14" MarginRight="17" MarginTop="5"
+                                               FillWidget="FillVisualParent\FillVisual">
+                                    <Children>
+                                        <Widget Id="FillVisualParent" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+                                            <Children>
+                                                <BrushWidget Id="FillVisual" WidthSizePolicy="Fixed"
+                                                             HeightSizePolicy="StretchToParent"
+                                                             SuggestedWidth="!BetterTroopHUD.TopMostTroopArrowCountBar.Canvas.Width"
+                                                             HorizontalAlignment="Left"
+                                                             Brush="BetterTroopHUD.TroopArrowCountBar.Fill">
+                                                    <Children>
+                                                        <BrushWidget WidthSizePolicy="Fixed"
+                                                                     HeightSizePolicy="Fixed"
+                                                                     SuggestedWidth="!BetterTroopHUD.TroopArrowCountBar.FillGlow.Width"
+                                                                     SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.FillGlow.Height"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Center"
+                                                                     Brush="BetterTroopHUD.TroopArrowCountBar.FillGlow"/>
+                                                    </Children>
+                                                </BrushWidget>
+                                            </Children>
+                                        </Widget>
+                                    </Children>
+                                </FillBarWidget>
+                                <Widget Id="TroopWidgetContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginLeft="12" MarginRight="12" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                            </Children>
+                        </Widget>
+
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                                Sprite="General\Mission\shield_frame"/>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopArrowCountBar.Icon.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Icon.Height"
+                                VerticalAlignment="Center" HorizontalAlignment="Left" PositionXOffset="-33"
+                                PositionYOffset="-8" Sprite="hud_ammunition_icon"/>
+                    </Children>
+                </TroopHealthWidget>
+
+                <!-- Troop Arrow Count Info (Shield position) -->
+                <TroopHealthWidget Id="ShieldPosTroopArrowCountWidget" Health="@ArrowCountMedianPrc"
+                                   MaxHealth="@MaxBarPrc"
+                                   HighestHealthValue="@ArrowCountMaxPrc"
+                                   BottomMarkerValue="@ArrowCountMedianLowHalfPrc"
+                                   TopMarkerValue="@ArrowCountMedianHighHalfPrc"
+                                   ShowMarkers="@ShowWidgetMarkers"
+                                   ShowHealthBar="@ShowShieldPosTroopArrowCountBar"
+                                   HealthBar="Canvas\FillBar"
+                                   WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                   SuggestedWidth="!BetterTroopHUD.ShieldPosTroopArrowCountBar.Frame.Width"
+                                   SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Frame.Height"
+                                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   MarginRight="470" MarginBottom="128"
+                                   HealthDropContainer="Canvas\HealthDropContainer"
+                                   HealthDropBrush="BetterTroopHUD.TroopArrowCountBar.FillChange"
+                                   HighestHealthFillBrush="BetterTroopHUD.TroopArrowCountBar.HighestHealthFill"
+                                   HealthMarkerBrush="BetterTroopHUD.TroopArrowCountBar.HealthMarker"
+                                   TroopWidgetContainer="Canvas\TroopWidgetContainer">
+                    <Children>
+                        <Widget Id="Canvas" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.ShieldPosTroopArrowCountBar.Canvas.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Canvas.Height"
+                                HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Sprite="General\Mission\shield_canvas">
+                            <Children>
+                                <Widget Id="HealthDropContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginRight="15" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                                <FillBarWidget Id="FillBar" ClipContents="true"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="Fixed"
+                                               SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Fill.Height"
+                                               VerticalAlignment="Center" PositionYOffset="-2"
+                                               IsVertical="false"
+                                               MarginLeft="14" MarginRight="17" MarginTop="5"
+                                               FillWidget="FillVisualParent\FillVisual">
+                                    <Children>
+                                        <Widget Id="FillVisualParent" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+                                            <Children>
+                                                <BrushWidget Id="FillVisual" WidthSizePolicy="Fixed"
+                                                             HeightSizePolicy="StretchToParent"
+                                                             SuggestedWidth="!BetterTroopHUD.ShieldPosTroopArrowCountBar.Canvas.Width"
+                                                             HorizontalAlignment="Left"
+                                                             Brush="BetterTroopHUD.TroopArrowCountBar.Fill">
+                                                    <Children>
+                                                        <BrushWidget WidthSizePolicy="Fixed"
+                                                                     HeightSizePolicy="Fixed"
+                                                                     SuggestedWidth="!BetterTroopHUD.TroopArrowCountBar.FillGlow.Width"
+                                                                     SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.FillGlow.Height"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Center"
+                                                                     Brush="BetterTroopHUD.TroopArrowCountBar.FillGlow"/>
+                                                    </Children>
+                                                </BrushWidget>
+                                            </Children>
+                                        </Widget>
+                                    </Children>
+                                </FillBarWidget>
+                                <Widget Id="TroopWidgetContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginLeft="12" MarginRight="12" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                            </Children>
+                        </Widget>
+
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                                Sprite="General\Mission\shield_frame"/>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopArrowCountBar.Icon.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopArrowCountBar.Icon.Height"
+                                VerticalAlignment="Center" HorizontalAlignment="Left" PositionXOffset="-33"
+                                PositionYOffset="-8" Sprite="hud_ammunition_icon"/>
+                    </Children>
+                </TroopHealthWidget>
+
+                <!-- Troop Shield Health Info -->
+                <TroopHealthWidget Id="TroopShieldHealthWidget" Health="@ShieldHealthMedianPrc"
+                                   MaxHealth="@MaxBarPrc"
+                                   HighestHealthValue="@ShieldHealthMaxPrc"
+                                   BottomMarkerValue="@ShieldHealthMedianLowHalfPrc"
+                                   TopMarkerValue="@ShieldHealthMedianHighHalfPrc"
+                                   ShowMarkers="@ShowWidgetMarkers"
+                                   ShowHealthBar="@ShowTroopShieldHealthBar"
+                                   HealthBar="Canvas\FillBar"
+                                   WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                   SuggestedWidth="!BetterTroopHUD.TroopShieldHealthBar.Frame.Width"
+                                   SuggestedHeight="!BetterTroopHUD.TroopShieldHealthBar.Frame.Height"
+                                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   MarginRight="470" MarginBottom="128"
+                                   HealthDropContainer="Canvas\HealthDropContainer"
+                                   HealthDropBrush="BetterTroopHUD.TroopShieldHealthBar.FillChange"
+                                   HighestHealthFillBrush="BetterTroopHUD.TroopShieldHealthBar.HighestHealthFill"
+                                   HealthMarkerBrush="BetterTroopHUD.TroopShieldHealthBar.HealthMarker"
+                                   TroopWidgetContainer="Canvas\TroopWidgetContainer">
+                    <Children>
+                        <Widget Id="Canvas" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopShieldHealthBar.Canvas.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopShieldHealthBar.Canvas.Height"
+                                HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Sprite="General\Mission\shield_canvas">
+                            <Children>
+                                <Widget Id="HealthDropContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginRight="15" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                                <FillBarWidget Id="FillBar" ClipContents="true"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="Fixed"
+                                               SuggestedHeight="!BetterTroopHUD.TroopShieldHealthBar.Fill.Height"
+                                               VerticalAlignment="Center" PositionYOffset="-2"
+                                               IsVertical="false"
+                                               MarginLeft="14" MarginRight="17" MarginTop="5"
+                                               FillWidget="FillVisualParent\FillVisual">
+                                    <Children>
+                                        <Widget Id="FillVisualParent" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+                                            <Children>
+                                                <BrushWidget Id="FillVisual" WidthSizePolicy="Fixed"
+                                                             HeightSizePolicy="StretchToParent"
+                                                             SuggestedWidth="!BetterTroopHUD.TroopShieldHealthBar.Canvas.Width"
+                                                             HorizontalAlignment="Left"
+                                                             Brush="BetterTroopHUD.TroopShieldHealthBar.Fill">
+                                                    <Children>
+                                                        <BrushWidget WidthSizePolicy="Fixed"
+                                                                     HeightSizePolicy="Fixed"
+                                                                     SuggestedWidth="!BetterTroopHUD.TroopShieldHealthBar.FillGlow.Width"
+                                                                     SuggestedHeight="!BetterTroopHUD.TroopShieldHealthBar.FillGlow.Height"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Center"
+                                                                     Brush="BetterTroopHUD.TroopShieldHealthBar.FillGlow"/>
+                                                    </Children>
+                                                </BrushWidget>
+                                            </Children>
+                                        </Widget>
+                                    </Children>
+                                </FillBarWidget>
+                                <Widget Id="TroopWidgetContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginLeft="14" MarginRight="17" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                            </Children>
+                        </Widget>
+
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                                Sprite="General\Mission\shield_frame"/>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopShieldHealthBar.Icon.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopShieldHealthBar.Icon.Height"
+                                VerticalAlignment="Center" HorizontalAlignment="Left" PositionXOffset="-33"
+                                PositionYOffset="-8" Sprite="General\Mission\shield_icon"/>
+                    </Children>
+                </TroopHealthWidget>
+
+                <!-- Troop Mount Health info -->
+                <TroopHealthWidget Id="TroopHorseHealthWidget" Health="@MountHealthMedianPrc"
+                                   MaxHealth="@MaxBarPrc"
+                                   HighestHealthValue="@MountHealthMaxPrc"
+                                   BottomMarkerValue="@MountHealthMedianLowHalfPrc"
+                                   TopMarkerValue="@MountHealthMedianHighHalfPrc"
+                                   ShowMarkers="@ShowWidgetMarkers"
+                                   ShowHealthBar="@ShowTroopMountHealthBar"
+                                   HealthBar="Canvas\FillBar" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                   SuggestedWidth="!BetterTroopHUD.TroopMountHealthBar.Frame.Width"
+                                   SuggestedHeight="!BetterTroopHUD.TroopMountHealthBar.Frame.Height"
+                                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   MarginRight="470" MarginBottom="81"
+                                   HealthDropContainer="Canvas\HealthDropContainer"
+                                   HealthDropBrush="BetterTroopHUD.TroopMountHealthBar.FillChange"
+                                   HighestHealthFillBrush="BetterTroopHUD.TroopMountHealthBar.HighestHealthFill"
+                                   HealthMarkerBrush="BetterTroopHUD.TroopMountHealthBar.HealthMarker"
+                                   TroopWidgetContainer="Canvas\TroopWidgetContainer">
+                    <Children>
+                        <Widget Id="Canvas" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopMountHealthBar.Canvas.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopMountHealthBar.Canvas.Height"
+                                HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Sprite="General\Mission\horse_canvas">
+                            <Children>
+                                <Widget Id="HealthDropContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginRight="15" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                                <FillBarWidget Id="FillBar" ClipContents="true"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="Fixed"
+                                               SuggestedHeight="!BetterTroopHUD.TroopMountHealthBar.Fill.Height"
+                                               VerticalAlignment="Center" PositionYOffset="-2"
+                                               IsVertical="false"
+                                               MarginLeft="14" MarginRight="17" MarginTop="5"
+                                               FillWidget="FillVisualParent\FillVisual">
+                                    <Children>
+                                        <Widget Id="FillVisualParent" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+                                            <Children>
+                                                <BrushWidget Id="FillVisual" WidthSizePolicy="Fixed"
+                                                             HeightSizePolicy="StretchToParent"
+                                                             SuggestedWidth="!BetterTroopHUD.TroopMountHealthBar.Canvas.Width"
+                                                             HorizontalAlignment="Left"
+                                                             Brush="BetterTroopHUD.TroopMountHealthBar.Fill">
+                                                    <Children>
+                                                        <BrushWidget WidthSizePolicy="Fixed"
+                                                                     HeightSizePolicy="Fixed"
+                                                                     SuggestedWidth="!BetterTroopHUD.TroopMountHealthBar.FillGlow.Width"
+                                                                     SuggestedHeight="!BetterTroopHUD.TroopMountHealthBar.FillGlow.Height"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Center"
+                                                                     Brush="BetterTroopHUD.TroopMountHealthBar.FillGlow"/>
+                                                    </Children>
+                                                </BrushWidget>
+                                            </Children>
+                                        </Widget>
+                                    </Children>
+                                </FillBarWidget>
+                                <Widget Id="TroopWidgetContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginLeft="14" MarginRight="17" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                            </Children>
+                        </Widget>
+
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                                Sprite="General\Mission\horse_frame"/>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopMountHealthBar.Icon.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopMountHealthBar.Icon.Height"
+                                VerticalAlignment="Center" HorizontalAlignment="Left" PositionXOffset="-35"
+                                PositionYOffset="8" Sprite="General\Mission\mount_icon"/>
+                    </Children>
+                </TroopHealthWidget>
+
+                <!-- Troop Health info -->
+                <TroopHealthWidget Id="TroopHealthWidget" Health="@HealthMedianPrc"
+                                   MaxHealth="@MaxBarPrc"
+                                   HighestHealthValue="@HealthMaxPrc"
+                                   BottomMarkerValue="@HealthMedianLowHalfPrc"
+                                   TopMarkerValue="@HealthMedianHighHalfPrc"
+                                   ShowMarkers="@ShowWidgetMarkers"
+                                   ShowHealthBar="@ShowTroopHealthBar"
+                                   HealthBar="Canvas\FillBar" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                   SuggestedWidth="!BetterTroopHUD.TroopHealthBar.Frame.Width"
+                                   SuggestedHeight="!BetterTroopHUD.TroopHealthBar.Frame.Height"
+                                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   MarginRight="430" MarginBottom="90"
+                                   HealthDropContainer="Canvas\HealthDropContainer"
+                                   HealthDropBrush="BetterTroopHUD.TroopHealthBar.FillChange"
+                                   HighestHealthFillBrush="BetterTroopHUD.TroopHealthBar.HighestHealthFill"
+                                   HealthMarkerBrush="BetterTroopHUD.TroopHealthBar.HealthMarker"
+                                   TroopWidgetContainer="Canvas\TroopWidgetContainer">
+                    <Children>
+                        <Widget Id="Canvas" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopHealthBar.Canvas.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopHealthBar.Canvas.Height"
+                                HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Sprite="General\Mission\hero_canvas">
+                            <Children>
+                                <Widget Id="HealthDropContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-2" MarginRight="22" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                                <FillBarWidget Id="FillBar" ClipContents="true"
+                                               WidthSizePolicy="StretchToParent"
+                                               HeightSizePolicy="Fixed"
+                                               SuggestedHeight="!BetterTroopHUD.TroopHealthBar.Fill.Height"
+                                               VerticalAlignment="Center" PositionYOffset="-2"
+                                               IsVertical="false"
+                                               MarginLeft="22" MarginRight="22" MarginTop="5"
+                                               FillWidget="FillVisualParent\FillVisual">
+                                    <Children>
+                                        <Widget Id="FillVisualParent" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+                                            <Children>
+                                                <BrushWidget Id="FillVisual" WidthSizePolicy="Fixed"
+                                                             HeightSizePolicy="StretchToParent"
+                                                             SuggestedWidth="!BetterTroopHUD.TroopHealthBar.Canvas.Width"
+                                                             HorizontalAlignment="Left"
+                                                             Brush="BetterTroopHUD.TroopHealthBar.Fill">
+                                                    <Children>
+                                                        <BrushWidget WidthSizePolicy="Fixed"
+                                                                     HeightSizePolicy="Fixed"
+                                                                     SuggestedWidth="!BetterTroopHUD.TroopHealthBar.FillGlow.Width"
+                                                                     SuggestedHeight="!BetterTroopHUD.TroopHealthBar.FillGlow.Height"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Center"
+                                                                     Brush="BetterTroopHUD.TroopHealthBar.FillGlow"/>
+                                                    </Children>
+                                                </BrushWidget>
+                                            </Children>
+                                        </Widget>
+                                    </Children>
+                                </FillBarWidget>
+                                <Widget Id="TroopWidgetContainer" WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="Fixed" SuggestedHeight="12" VerticalAlignment="Center"
+                                        PositionYOffset="-1" MarginLeft="22" MarginRight="22" MarginTop="5">
+                                    <Children>
+                                    </Children>
+                                </Widget>
+                            </Children>
+                        </Widget>
+
+                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                                Sprite="General\Mission\health_bar_frame"/>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                                SuggestedWidth="!BetterTroopHUD.TroopHealthBar.Icon.Width"
+                                SuggestedHeight="!BetterTroopHUD.TroopHealthBar.Icon.Height"
+                                VerticalAlignment="Center" HorizontalAlignment="Left" PositionXOffset="-36"
+                                MarginBottom="15" Sprite="hud_party_icon"/>
+                    </Children>
+                </TroopHealthWidget>
+            </Children>
+        </Widget>
+    </Window>
+</Prefab>

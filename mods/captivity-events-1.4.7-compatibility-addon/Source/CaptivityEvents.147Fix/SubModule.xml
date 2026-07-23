@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/SubModule.xsd">
+  <Id value="CaptivityEvents.147Fix" />
+  <Name value="Captivity Events - Bannerlord 1.4.7 Safety Fix" />
+  <Version value="v1.0.0" />
+  <Official value="false" />
+  <DefaultModule value="false" />
+  <ModuleCategory value="Singleplayer" />
+  <SingleplayerModule value="true" />
+  <MultiplayerModule value="false" />
+
+  <DependedModules>
+    <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="Native" />
+    <DependedModule Id="SandBoxCore" />
+    <DependedModule Id="Sandbox" />
+    <DependedModule Id="zCaptivityEvents" DependentVersion="v1.4.5.1400" />
+  </DependedModules>
+
+  <DependedModuleMetadatas>
+    <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" />
+    <DependedModuleMetadata id="Native" order="LoadBeforeThis" version="v1.4.7.*" />
+    <DependedModuleMetadata id="SandBoxCore" order="LoadBeforeThis" version="v1.4.7.*" />
+    <DependedModuleMetadata id="Sandbox" order="LoadBeforeThis" version="v1.4.7.*" />
+    <DependedModuleMetadata id="zCaptivityEvents" order="LoadBeforeThis" version="v1.4.5.1400" />
+  </DependedModuleMetadatas>
+
+  <SubModules>
+    <SubModule>
+      <Name value="Captivity Events - Bannerlord 1.4.7 Safety Fix" />
+      <DLLName value="CaptivityEvents.147Fix.dll" />
+      <SubModuleClassType value="CaptivityEvents_147Fix.SubModule" />
+      <Tags>
+        <Tag key="DedicatedServerType" value="none" />
+        <Tag key="IsNoRenderModeElement" value="false" />
+      </Tags>
+    </SubModule>
+  </SubModules>
+</Module>

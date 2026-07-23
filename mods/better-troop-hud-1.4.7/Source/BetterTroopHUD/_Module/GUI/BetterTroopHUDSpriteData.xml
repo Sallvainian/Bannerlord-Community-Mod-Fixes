@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SpriteData>
+  <SpriteCategories>
+    <SpriteCategory>
+      <Name>ui_bettertroophud</Name>
+      <AlwaysLoad />
+      <SpriteSheetCount>1</SpriteSheetCount>
+      <SpriteSheetSize ID="1" Width="256" Height="128" />
+    </SpriteCategory>
+  </SpriteCategories>
+  <SpriteParts>
+    <SpritePart>
+      <SheetID>1</SheetID>
+      <Name>hud_ammunition_icon</Name>
+      <Width>56</Width>
+      <Height>60</Height>
+      <SheetX>84</SheetX>
+      <SheetY>4</SheetY>
+      <CategoryName>ui_bettertroophud</CategoryName>
+    </SpritePart>
+    <SpritePart>
+      <SheetID>1</SheetID>
+      <Name>hud_party_icon</Name>
+      <Width>72</Width>
+      <Height>72</Height>
+      <SheetX>4</SheetX>
+      <SheetY>4</SheetY>
+      <CategoryName>ui_bettertroophud</CategoryName>
+    </SpritePart>
+  </SpriteParts>
+  <Sprites>
+    <GenericSprite>
+      <Name>hud_ammunition_icon</Name>
+      <SpritePartName>hud_ammunition_icon</SpritePartName>
+    </GenericSprite>
+    <GenericSprite>
+      <Name>hud_party_icon</Name>
+      <SpritePartName>hud_party_icon</SpritePartName>
+    </GenericSprite>
+  </Sprites>
+</SpriteData>

@@ -1,0 +1,75 @@
+# IDE and user state
+.vs/
+.idea/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.rsuser
+*.sln.docstates
+
+# .NET build and test output
+**/[Bb]in/
+**/[Oo]bj/
+**/[Bb]uild/
+**/[Dd]istribution/
+**/[Rr]elease/
+**/[Rr]eleases/
+**/TestResults/
+artifacts/
+packages/
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.cache
+*.binlog
+*.nupkg
+*.snupkg
+
+# Archives and crash output
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.dmp
+*.mdmp
+*.wer
+*.log
+*.jsonl
+crashreport*.html
+
+# Generated Bannerlord resources
+**/RuntimeDataCache/
+*.rdc
+*.tpac
+
+# Local game, dependency, and reference material
+local/
+third-party-local/
+**/Backups/
+**/OldMods/
+**/NewMods/
+**/ReferenceSources/
+**/Staging/
+**/diagnostics/
+**/reports/
+**/decompiled/
+
+# Credentials and machine-local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.secret
+*.pem
+*.pfx
+*.snk
+**/hosts.yml
+**/.handoff.md
+
+# Workspace/session material
+CodexSessionBackup/
+GitHubAuth/
+*.bmlist

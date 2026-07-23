@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/SubModule.xsd">
+  <Id value="BK_Diplomacy_ModuleLoader_Patch" />
+  <Name value="Banner Kings Redux - Diplomacy Compatibility" />
+  <Version value="v2.1.0" />
+  <Official value="false" />
+  <DefaultModule value="false" />
+  <ModuleCategory value="Singleplayer" />
+  <SingleplayerModule value="true" />
+  <MultiplayerModule value="false" />
+  <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/7886" />
+
+  <DependedModules>
+    <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="BannerKings.Redux" />
+    <DependedModule Id="Bannerlord.Diplomacy" />
+  </DependedModules>
+
+  <DependedModuleMetadatas>
+    <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" />
+    <DependedModuleMetadata id="BannerKings.Redux" order="LoadBeforeThis" />
+    <DependedModuleMetadata id="Bannerlord.Diplomacy" order="LoadBeforeThis" />
+  </DependedModuleMetadatas>
+
+  <SubModules>
+    <SubModule>
+      <Name value="Banner Kings Redux - Diplomacy Compatibility" />
+      <DLLName value="BK_Diplomacy_ModuleLoader_Patch.dll" />
+      <SubModuleClassType value="BK_Diplomacy_ModuleLoader_Patch.SubModule" />
+      <Tags>
+        <Tag key="DedicatedServerType" value="none" />
+        <Tag key="IsNoRenderModeElement" value="false" />
+      </Tags>
+    </SubModule>
+  </SubModules>
+</Module>

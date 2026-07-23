@@ -1,0 +1,5 @@
+﻿<Config>
+    <SpriteCategory Name="ui_bettertroophud">
+        <AlwaysLoad/>
+    </SpriteCategory>
+</Config>
