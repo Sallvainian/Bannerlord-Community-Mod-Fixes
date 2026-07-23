@@ -1,0 +1,150 @@
+name: Publish release to Nexus Mods
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing GitHub release tag whose ZIP should be uploaded
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-${{ github.event.release.tag_name || inputs.release_tag }}
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    name: Upload release ZIP
+    if: github.event_name == 'workflow_dispatch' || !github.event.release.prerelease
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
+      FILE_ID_BK_DIPLOMACY: ${{ vars.NEXUSMODS_FILE_ID_BK_DIPLOMACY }}
+      FILE_ID_BETTER_TROOP_HUD: ${{ vars.NEXUSMODS_FILE_ID_BETTER_TROOP_HUD }}
+      FILE_ID_RELENTLESS_SMITH: ${{ vars.NEXUSMODS_FILE_ID_RELENTLESS_SMITH }}
+      FILE_ID_CAPTIVITY_EVENTS: ${{ vars.NEXUSMODS_FILE_ID_CAPTIVITY_EVENTS }}
+
+    steps:
+      - name: Resolve mod metadata from release tag
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          additional_dll_name=""
+
+          case "$RELEASE_TAG" in
+            bk-diplomacy-v*)
+              tag_prefix="bk-diplomacy-v"
+              archive_prefix="Banner-Kings-Redux-Diplomacy-Compatibility-v"
+              module_root="BK_Diplomacy_ModuleLoader_Patch"
+              dll_name="BK_Diplomacy_ModuleLoader_Patch.dll"
+              display_name="Banner Kings Redux - Diplomacy Compatibility"
+              file_id="$FILE_ID_BK_DIPLOMACY"
+              ;;
+            better-troop-hud-v*)
+              tag_prefix="better-troop-hud-v"
+              archive_prefix="Better-Troop-HUD-1.4.7-v"
+              module_root="BetterTroopHUD.147"
+              dll_name="BetterTroopHUD.dll"
+              display_name="Better Troop HUD - Bannerlord 1.4.7 Compatibility Port"
+              file_id="$FILE_ID_BETTER_TROOP_HUD"
+              ;;
+            relentless-smith-bk-redux-v*)
+              tag_prefix="relentless-smith-bk-redux-v"
+              archive_prefix="Relentless-Smith-BK-Redux-Compatibility-v"
+              module_root="RelentlessSmithConcise.BKRedux.Fixes"
+              dll_name="RelentlessSmithConcise.BKRedux.Fixes.dll"
+              display_name="Relentless Smith - Banner Kings Redux Compatibility"
+              file_id="$FILE_ID_RELENTLESS_SMITH"
+              ;;
+            captivity-events-1.4.7-v*)
+              tag_prefix="captivity-events-1.4.7-v"
+              archive_prefix="Captivity-Events-Updated-1.4.7-v"
+              module_root="zCaptivityEvents"
+              dll_name="CaptivityEvents.147Fix.dll"
+              additional_dll_name="CaptivityEvents.dll"
+              display_name="Captivity Events (Updated 1.4.7)"
+              file_id="$FILE_ID_CAPTIVITY_EVENTS"
+              ;;
+            *)
+              echo "::error::Unsupported release tag '$RELEASE_TAG'."
+              exit 1
+              ;;
+          esac
+
+          version="${RELEASE_TAG#${tag_prefix}}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::Tag '$RELEASE_TAG' produced invalid version '$version'."
+            exit 1
+          fi
+
+          if [[ -z "$file_id" ]]; then
+            echo "::error::The Nexus Mods file ID variable for '$display_name' is not configured."
+            exit 1
+          fi
+
+          archive="${archive_prefix}${version}.zip"
+          archive_path="${RUNNER_TEMP}/${archive}"
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "archive=$archive" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$archive_path" >> "$GITHUB_OUTPUT"
+          echo "module_root=$module_root" >> "$GITHUB_OUTPUT"
+          echo "dll_name=$dll_name" >> "$GITHUB_OUTPUT"
+          echo "additional_dll_name=$additional_dll_name" >> "$GITHUB_OUTPUT"
+          echo "display_name=$display_name" >> "$GITHUB_OUTPUT"
+          echo "file_id=$file_id" >> "$GITHUB_OUTPUT"
+
+      - name: Download ZIP from the GitHub release
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "${{ steps.release.outputs.archive }}" \
+            --dir "$RUNNER_TEMP"
+
+      - name: Validate Bannerlord package layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="${{ steps.release.outputs.archive_path }}"
+          module_root="${{ steps.release.outputs.module_root }}"
+          dll_name="${{ steps.release.outputs.dll_name }}"
+          additional_dll_name="${{ steps.release.outputs.additional_dll_name }}"
+
+          test -s "$archive"
+          unzip -t "$archive"
+          unzip -Z1 "$archive" | grep -Fxq "${module_root}/SubModule.xml"
+          unzip -Z1 "$archive" | grep -Fxq "${module_root}/bin/Win64_Shipping_Client/${dll_name}"
+          if [[ -n "$additional_dll_name" ]]; then
+            unzip -Z1 "$archive" | grep -Fxq "${module_root}/bin/Win64_Shipping_Client/${additional_dll_name}"
+          fi
+
+      - name: Upload new file version to Nexus Mods
+        id: nexus
+        # Nexus-Mods/upload-action main, pinned to the reviewed 2026-07-22 commit.
+        uses: Nexus-Mods/upload-action@19da5c91527877cd0bfedc6e6239c911035846a0
+        with:
+          api_key: ${{ secrets.NEXUSMODS_API_KEY }}
+          file_id: ${{ steps.release.outputs.file_id }}
+          filename: ${{ steps.release.outputs.archive_path }}
+          version: ${{ steps.release.outputs.version }}
+          display_name: ${{ steps.release.outputs.display_name }}
+          description: Automated upload from GitHub release ${{ env.RELEASE_TAG }}.
+          category: main
+          archive_existing_version: true
+          primary_mod_manager_download: true
+          allow_mod_manager_download: true
+          show_requirements_pop_up: false
+          update_mod_version: true
+
+      - name: Report Nexus version ID
+        shell: bash
+        run: echo "Nexus Mods version ID ${{ steps.nexus.outputs.version_id }}"

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using HarmonyLib;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -30,12 +29,9 @@ namespace CaptivityEvents_147Fix
         private static readonly HashSet<string> ReportedCharacterProblems =
             new HashSet<string>(StringComparer.Ordinal);
 
-        private static FieldInfo _captivityEventsLoadedField;
         private static MethodInfo _captivityEventsInstanceGetter;
         private static MethodInfo _captivityEventsReloadImagesMethod;
         private static Mission _lastMissionWithLoadedImageCategories;
-        private static int _captivityEventsInitializationGate;
-        private static bool _reportedDuplicateInitialization;
 
         private Harmony _harmony;
         private bool _characterSafetyInstalled;
@@ -45,7 +41,6 @@ namespace CaptivityEvents_147Fix
         {
             base.OnSubModuleLoad();
             _harmony = new Harmony(HarmonyId);
-            InstallEarlyInitializationGuard();
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
@@ -89,36 +84,6 @@ namespace CaptivityEvents_147Fix
             base.OnSubModuleUnloaded();
         }
 
-        private void InstallEarlyInitializationGuard()
-        {
-            Type ceSubModule = AccessTools.TypeByName(CaptivityEventsSubModuleType);
-            MethodInfo target = ceSubModule == null
-                ? null
-                : AccessTools.Method(ceSubModule, "OnBeforeInitialModuleScreenSetAsRoot");
-            FieldInfo loadedField = ceSubModule == null
-                ? null
-                : AccessTools.Field(ceSubModule, "_isLoaded");
-
-            if (target == null || target.ReturnType != typeof(void) ||
-                target.GetParameters().Length != 0 ||
-                loadedField == null || loadedField.FieldType != typeof(bool) ||
-                !loadedField.IsStatic)
-            {
-                Log("WARNING: Captivity Events initialization contract did not match; " +
-                    "duplicate-patch guard was not installed.");
-                return;
-            }
-
-            _captivityEventsLoadedField = loadedField;
-            _harmony.Patch(
-                target,
-                prefix: new HarmonyMethod(
-                    AccessTools.Method(typeof(SubModule), nameof(CaptivityEventsInitializationPrefix))),
-                finalizer: new HarmonyMethod(
-                    AccessTools.Method(typeof(SubModule), nameof(CaptivityEventsInitializationFinalizer))));
-            Log("Installed early Captivity Events initialization guard.");
-        }
-
         private void InstallCharacterSafetyPatches()
         {
             if (_characterSafetyInstalled)
@@ -137,17 +102,26 @@ namespace CaptivityEvents_147Fix
             {
                 new CharacterPatchContract(
                     "UpgradeTargets",
-                    AccessTools.PropertyGetter(typeof(CharacterObject), "UpgradeTargets"),
+                    ResolveDeclaredGetter(
+                        typeof(CharacterObject),
+                        "UpgradeTargets",
+                        typeof(CharacterObject[])),
                     AccessTools.Method(cePatchType, "UpgradeTargets"),
                     AccessTools.Method(typeof(SubModule), nameof(SafeUpgradeTargetsPostfix))),
                 new CharacterPatchContract(
                     "Culture",
-                    AccessTools.PropertyGetter(typeof(CharacterObject), "Culture"),
+                    ResolveDeclaredGetter(
+                        typeof(CharacterObject),
+                        "Culture",
+                        typeof(CultureObject)),
                     AccessTools.Method(cePatchType, "Culture"),
                     AccessTools.Method(typeof(SubModule), nameof(SafeCulturePostfix))),
                 new CharacterPatchContract(
                     "FirstBattleEquipment",
-                    AccessTools.PropertyGetter(typeof(CharacterObject), "FirstBattleEquipment"),
+                    ResolveDeclaredGetter(
+                        typeof(CharacterObject),
+                        "FirstBattleEquipment",
+                        typeof(Equipment)),
                     AccessTools.Method(cePatchType, "FirstBattleEquipment"),
                     AccessTools.Method(typeof(SubModule), nameof(SafeFirstBattleEquipmentPostfix)))
             };
@@ -223,7 +197,10 @@ namespace CaptivityEvents_147Fix
                 typeof(SubModule), nameof(SafeLoadUnloadAllCategoriesPostfix));
             MethodInfo instanceGetter = ceSubModuleType == null
                 ? null
-                : AccessTools.PropertyGetter(ceSubModuleType, "Instance");
+                : ResolveDeclaredGetter(
+                    ceSubModuleType,
+                    "Instance",
+                    ceSubModuleType);
             MethodInfo reloadImages = ceSubModuleType == null
                 ? null
                 : AccessTools.Method(ceSubModuleType, "ReloadImagesAgain", Type.EmptyTypes);
@@ -279,57 +256,36 @@ namespace CaptivityEvents_147Fix
             }
         }
 
+        private static MethodInfo ResolveDeclaredGetter(
+            Type declaringType,
+            string propertyName,
+            Type returnType)
+        {
+            MethodInfo[] matches = declaringType
+                .GetMethods(
+                    BindingFlags.Instance |
+                    BindingFlags.Static |
+                    BindingFlags.Public |
+                    BindingFlags.NonPublic |
+                    BindingFlags.DeclaredOnly)
+                .Where(method =>
+                    string.Equals(
+                        method.Name,
+                        "get_" + propertyName,
+                        StringComparison.Ordinal) &&
+                    method.ReturnType == returnType &&
+                    method.GetParameters().Length == 0)
+                .ToArray();
+
+            return matches.Length == 1 ? matches[0] : null;
+        }
+
         private static bool HasExactCaptivityEventsPostfix(MethodInfo target, MethodInfo patch)
         {
             Patches patchInfo = Harmony.GetPatchInfo(target);
             return patchInfo?.Postfixes.Any(entry =>
                 string.Equals(entry.owner, CaptivityEventsHarmonyId, StringComparison.Ordinal) &&
                 entry.PatchMethod == patch) == true;
-        }
-
-        [HarmonyPriority(Priority.First)]
-        private static bool CaptivityEventsInitializationPrefix(ref bool __state)
-        {
-            __state = false;
-            try
-            {
-                if (_captivityEventsLoadedField != null &&
-                    (bool)_captivityEventsLoadedField.GetValue(null))
-                {
-                    ReportDuplicateInitializationOnce(
-                        "Skipped repeated Captivity Events initialization after successful load.");
-                    return false;
-                }
-
-                if (Interlocked.CompareExchange(
-                        ref _captivityEventsInitializationGate, 1, 0) != 0)
-                {
-                    ReportDuplicateInitializationOnce(
-                        "Skipped re-entrant Captivity Events initialization.");
-                    return false;
-                }
-
-                __state = true;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Log("WARNING: initialization guard failed open: " +
-                    ex.GetType().Name + ": " + ex.Message);
-                return true;
-            }
-        }
-
-        private static Exception CaptivityEventsInitializationFinalizer(
-            Exception __exception,
-            bool __state)
-        {
-            if (__state)
-            {
-                Interlocked.Exchange(ref _captivityEventsInitializationGate, 0);
-            }
-
-            return __exception;
         }
 
         [HarmonyPriority(Priority.Last)]
@@ -496,17 +452,6 @@ namespace CaptivityEvents_147Fix
             {
                 return "<error:" + ex.GetType().Name + ">";
             }
-        }
-
-        private static void ReportDuplicateInitializationOnce(string message)
-        {
-            if (_reportedDuplicateInitialization)
-            {
-                return;
-            }
-
-            _reportedDuplicateInitialization = true;
-            Log(message);
         }
 
         private static void Log(string message)

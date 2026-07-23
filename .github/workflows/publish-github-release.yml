@@ -1,0 +1,123 @@
+name: Publish installable GitHub release
+
+on:
+  push:
+    tags:
+      - bk-diplomacy-v*
+      - better-troop-hud-v*
+      - relentless-smith-bk-redux-v*
+      - captivity-events-1.4.7-v*
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Mod release to publish
+        required: true
+        type: choice
+        options:
+          - bk-diplomacy
+          - better-troop-hud
+          - relentless-smith-bk-redux
+          - captivity-events-1.4.7
+      version:
+        description: Semantic release version, for example 1.0.1
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-release-${{ github.ref_name || inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Validate ZIP and publish release
+    runs-on: [self-hosted, Windows, X64, bannerlord]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Resolve requested release
+        id: request
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            $target = '${{ inputs.target }}'
+            $version = '${{ inputs.version }}'
+          }
+          else {
+            $tag = '${{ github.ref_name }}'
+            switch -Wildcard ($tag) {
+              'bk-diplomacy-v*' {
+                $target = 'bk-diplomacy'
+                $version = $tag.Substring('bk-diplomacy-v'.Length)
+              }
+              'better-troop-hud-v*' {
+                $target = 'better-troop-hud'
+                $version = $tag.Substring('better-troop-hud-v'.Length)
+              }
+              'relentless-smith-bk-redux-v*' {
+                $target = 'relentless-smith-bk-redux'
+                $version = $tag.Substring('relentless-smith-bk-redux-v'.Length)
+              }
+              'captivity-events-1.4.7-v*' {
+                $target = 'captivity-events-1.4.7'
+                $version = $tag.Substring('captivity-events-1.4.7-v'.Length)
+              }
+              default {
+                throw "Unsupported release tag '$tag'."
+              }
+            }
+          }
+
+          "target=$target" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Prepare and validate installable ZIP
+        id: asset
+        shell: pwsh
+        env:
+          BANNERLORD_MODDING_ROOT: ${{ vars.BANNERLORD_MODDING_ROOT }}
+        run: |
+          ./scripts/Prepare-GitHubReleaseAsset.ps1 `
+            -Target '${{ steps.request.outputs.target }}' `
+            -Version '${{ steps.request.outputs.version }}'
+
+      - name: Create or update GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = '${{ steps.asset.outputs.release_tag }}'
+          $archive = '${{ steps.asset.outputs.archive_path }}'
+          $title = '${{ steps.asset.outputs.display_name }} v${{ steps.asset.outputs.version }}'
+
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $archive `
+              --repo $env:GITHUB_REPOSITORY `
+              --clobber
+          }
+          else {
+            gh release create $tag $archive `
+              --repo $env:GITHUB_REPOSITORY `
+              --target $env:GITHUB_SHA `
+              --title $title `
+              --generate-notes
+          }
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "GitHub release publishing failed for $tag."
+          }
+
+      - name: Report published artifact
+        shell: pwsh
+        run: |
+          Write-Host 'Release: ${{ steps.asset.outputs.release_tag }}'
+          Write-Host 'Archive: ${{ steps.asset.outputs.archive_name }}'
+          Write-Host 'SHA256: ${{ steps.asset.outputs.sha256 }}'
