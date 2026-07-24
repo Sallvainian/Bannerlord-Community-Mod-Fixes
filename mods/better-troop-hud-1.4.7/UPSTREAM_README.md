@@ -2,8 +2,9 @@
 
 > Archived upstream README from commit
 > `56015be090317f92783da19a8ced5e6441715813`. Promotional images referenced
-> below are available in the upstream repository and are not mirrored in this
-> source-only monorepo.
+> below are available in the upstream repository. Image 5 is mirrored under
+> `assets/nexus` as an attributed in-game UI reference; the others are not
+> mirrored in this source-only monorepo.
 
 >*Level up your troop management with clear and concise information about your formations.\
 >Make smarter decisions on the battlefield with a glance!*
