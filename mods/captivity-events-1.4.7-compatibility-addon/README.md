@@ -17,13 +17,18 @@ included only in the consolidated release package.
   and non-mutating fallback values. Missing equipment, culture, or upgrade
   targets no longer randomize the player, disable a hero, pause campaign time,
   or destroy every `CustomPartyCE_` party.
+- Re-audits those three getters during campaign initialization, removes any
+  original Captivity Events postfixes that were registered again, and verifies
+  that exactly one safety postfix remains on each getter.
+- Keeps recovered object identities in `rgl_log` for diagnosis without
+  displaying one warning per object in the in-game chat.
 - Replaces the every-mission-tick image-atlas reload postfix with a reload that
   occurs only when mission UI categories transition into the loaded state.
 - Resolves the exact Bannerlord `CharacterObject` getters instead of using an
   ambiguous inherited-property lookup.
 
-The add-on uses checked runtime contracts and restores the original Captivity
-Events patches if a replacement cannot be installed safely.
+The add-on uses checked runtime contracts and preserves a working fallback for
+each getter if a replacement cannot be installed safely.
 
 ## Installation
 
@@ -43,6 +48,10 @@ Set `BANNERLORD_GAME_DIR` to a Bannerlord v1.4.7 installation and build
 configuration. Embed the resulting DLL as the second submodule inside the
 updated `zCaptivityEvents` package. Captivity Events itself is discovered at
 runtime and is not a compile-time repository dependency.
+
+`Tests/PatchStateVerifier` exercises the real Captivity Events, Bannerlord, and
+safety-layer methods in an isolated process. It verifies both the initial
+replacement and removal of a deliberately re-registered late original patch.
 
 ## License and credits
 
