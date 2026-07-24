@@ -45,6 +45,15 @@ It does not retain generated `.tpac` or RuntimeDataCache `.rdc` files. The
 release must regenerate them with the appropriate TaleWorlds asset pipeline.
 They belong in release artifacts, not in source control.
 
+## Nexus artwork
+
+The two Better Troop HUD title images under `assets/nexus` deliberately omit
+invented formation markers. The separate
+`better-troop-hud-upstream-in-game-reference-1920x1080.png` is the original
+author's `Assets/Mod preview - Image 5.png` from the upstream commit cited above.
+It is retained as an authentic reference for the widget's in-game appearance,
+not represented as a fresh screenshot captured from this Bannerlord 1.4.7 port.
+
 ## Credits and license
 
 Original BetterTroopHUD code and design are by
