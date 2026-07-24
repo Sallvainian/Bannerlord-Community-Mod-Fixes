@@ -7,9 +7,9 @@
     <Platforms>x64</Platforms>
     <AssemblyName>RelentlessSmithConcise.BKRedux.Fixes</AssemblyName>
     <RootNamespace>RelentlessSmithConciseBKReduxFixes</RootNamespace>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
     <Deterministic>true</Deterministic>
     <PathMap Condition="'$(Configuration)' == 'Release'">$(MSBuildProjectDirectory)=./RelentlessSmithConcise.BKRedux.Fixes/,$(UserProfile)\.nuget\packages=./NuGetPackages/</PathMap>
     <EnableSourceLink>false</EnableSourceLink>

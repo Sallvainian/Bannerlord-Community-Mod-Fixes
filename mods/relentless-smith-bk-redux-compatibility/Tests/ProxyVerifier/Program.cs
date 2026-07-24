@@ -152,7 +152,11 @@ namespace ProxyVerifier
 
                 selectionPostfix.Invoke(null, new object[] { vm });
                 Require(vm.CurrentSelectedItem.IsSelected, "The visually cleared next item was not reselected.");
+                Require(vm.IsAnyItemSelected, "The smelting VM did not restore its selected-item state.");
                 Require(vm.SelectionCallCount == 1, "Bannerlord's selection callback was not invoked exactly once.");
+                Require(
+                    vm.CurrentWasClearedBeforeSelection,
+                    "The stale current row was not cleared before invoking Bannerlord's selection callback.");
 
                 selectionPostfix.Invoke(null, new object[] { vm });
                 Require(vm.SelectionCallCount == 1, "An already selected item was selected a second time.");
@@ -426,14 +430,36 @@ namespace ProxyVerifier
 
         private sealed class FakeSmeltingVm
         {
-            public FakeSmeltingItem CurrentSelectedItem { get; set; }
+            private FakeSmeltingItem _currentSelectedItem;
+
+            public FakeSmeltingItem CurrentSelectedItem
+            {
+                get => _currentSelectedItem;
+                set
+                {
+                    _currentSelectedItem = value;
+                    IsAnyItemSelected = value != null;
+                }
+            }
+
+            internal bool IsAnyItemSelected { get; private set; }
 
             internal int SelectionCallCount { get; private set; }
 
+            internal bool CurrentWasClearedBeforeSelection { get; private set; }
+
             private void OnItemSelection(FakeSmeltingItem item)
             {
-                CurrentSelectedItem = item;
-                CurrentSelectedItem.IsSelected = true;
+                CurrentWasClearedBeforeSelection = CurrentSelectedItem == null;
+                if (item != CurrentSelectedItem)
+                {
+                    if (CurrentSelectedItem != null)
+                    {
+                        CurrentSelectedItem.IsSelected = false;
+                    }
+                    CurrentSelectedItem = item;
+                    CurrentSelectedItem.IsSelected = true;
+                }
                 SelectionCallCount++;
             }
         }

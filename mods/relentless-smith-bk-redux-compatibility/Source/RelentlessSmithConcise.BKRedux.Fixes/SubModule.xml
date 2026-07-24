@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/SubModule.xsd">
   <Id value="RelentlessSmithConcise.BKRedux.Fixes" />
   <Name value="Relentless Smith - Banner Kings Redux Compatibility" />
-  <Version value="v1.0.2" />
+  <Version value="v1.0.3" />
   <DefaultModule value="false" />
   <ModuleCategory value="Singleplayer" />
   <ModuleType value="Community" />

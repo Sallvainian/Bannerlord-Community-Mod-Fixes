@@ -1,9 +1,19 @@
 # Changelog
 
+## 1.0.3
+
+- Corrected automatic reselection after smelting by clearing Bannerlord's
+  stale `CurrentSelectedItem` reference before invoking its vanilla selection
+  transition.
+- Verified that the next row becomes both the current item and visibly
+  selected, restoring repeated use of the Smelt button without another click.
+- Updated the proxy verifier to reproduce Bannerlord's real same-item guard,
+  which exposed the incomplete 1.0.2 implementation.
+
 ## 1.0.2
 
-- Restored Bannerlord's automatic next-item selection after Relentless Smith
-  smelts one or more selected rows.
+- Attempted to restore Bannerlord's automatic next-item selection after
+  Relentless Smith smelts one or more selected rows.
 - Preserved Relentless Smith's bulk, Ctrl-selection, and stack-smelting
   behavior while repairing only the visually cleared current row.
 - Added exact runtime-contract checks for Relentless Smith's

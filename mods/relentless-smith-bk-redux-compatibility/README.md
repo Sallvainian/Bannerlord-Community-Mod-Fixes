@@ -22,9 +22,11 @@ changes and exception behavior for those relevant calls.
 Relentless Smith also refreshes the smelting list after an operation, assigns
 the first remaining row as the current item, then clears the visual selection
 state. That forces the player to click a row before every subsequent smelt.
-This module now restores Bannerlord's own `OnItemSelection` callback only when
-Relentless Smith leaves the current row visually unselected. Bulk, Ctrl, and
-stack-selection behavior remains owned by Relentless Smith.
+This module now clears Relentless Smith's stale current-row reference and then
+uses Bannerlord's own `OnItemSelection` transition only when the current row
+was left visually unselected. This is necessary because Bannerlord deliberately
+does nothing when `OnItemSelection` receives the already-current row. Bulk,
+Ctrl, and stack-selection behavior remains owned by Relentless Smith.
 
 ## Installation order
 

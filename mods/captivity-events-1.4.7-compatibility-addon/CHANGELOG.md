@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.2
+
+- Re-checks the live Harmony patch table during campaign initialization before
+  any diagnostic `CharacterObject` enumeration occurs.
+- Removes re-applied Captivity Events `Culture`, `UpgradeTargets`, and
+  `FirstBattleEquipment` postfixes by Harmony owner and verifies that none
+  remain.
+- Verifies exactly one safety postfix is active on each getter and reports
+  whether a late original patch had to be removed.
+- Prevents Captivity Events' original red warning spam and destructive
+  character/party recovery path from running alongside the safety layer.
+- Records each recovered object identity in `rgl_log` without replacing the
+  red spam with another set of per-character chat messages.
+
 ## 1.0.1
 
 - Removed the early Harmony wrapper around Captivity Events initialization

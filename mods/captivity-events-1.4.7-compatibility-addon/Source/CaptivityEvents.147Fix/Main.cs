@@ -46,7 +46,7 @@ namespace CaptivityEvents_147Fix
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
-            InstallCharacterSafetyPatches();
+            EnsureCharacterSafetyPatches("initial module screen");
             InstallMissionImageSafetyPatch();
         }
 
@@ -57,6 +57,8 @@ namespace CaptivityEvents_147Fix
             {
                 return;
             }
+
+            EnsureCharacterSafetyPatches("campaign initialization");
 
             try
             {
@@ -84,13 +86,8 @@ namespace CaptivityEvents_147Fix
             base.OnSubModuleUnloaded();
         }
 
-        private void InstallCharacterSafetyPatches()
+        private void EnsureCharacterSafetyPatches(string stage)
         {
-            if (_characterSafetyInstalled)
-            {
-                return;
-            }
-
             Type cePatchType = AccessTools.TypeByName(CaptivityEventsCharacterPatchType);
             if (cePatchType == null)
             {
@@ -126,44 +123,101 @@ namespace CaptivityEvents_147Fix
                     AccessTools.Method(typeof(SubModule), nameof(SafeFirstBattleEquipmentPostfix)))
             };
 
-            if (contracts.Any(contract => !contract.IsValid ||
-                !HasExactCaptivityEventsPostfix(contract.Target, contract.CaptivityEventsPostfix)))
+            bool firstInstallation = !_characterSafetyInstalled;
+            if (contracts.Any(contract => !contract.IsValid) ||
+                (firstInstallation && contracts.Any(contract =>
+                    !HasExactCaptivityEventsPostfix(
+                        contract.Target,
+                        contract.CaptivityEventsPostfix))))
             {
                 Log("WARNING: one or more Captivity Events CharacterObject contracts did not " +
                     "match the live Harmony table; no destructive fallback was changed.");
                 return;
             }
 
+            var removedOriginals = new List<CharacterPatchContract>();
             try
             {
                 foreach (CharacterPatchContract contract in contracts)
                 {
-                    _harmony.Unpatch(contract.Target, contract.CaptivityEventsPostfix);
+                    if (CountOwnedPostfix(contract.Target, CaptivityEventsHarmonyId) > 0)
+                    {
+                        _harmony.Unpatch(
+                            contract.Target,
+                            HarmonyPatchType.Postfix,
+                            CaptivityEventsHarmonyId);
+                        removedOriginals.Add(contract);
+                    }
+                }
+
+                if (contracts.Any(contract =>
+                    CountOwnedPostfix(contract.Target, CaptivityEventsHarmonyId) != 0))
+                {
+                    throw new InvalidOperationException(
+                        "Captivity Events still owned a CharacterObject postfix after removal.");
                 }
 
                 foreach (CharacterPatchContract contract in contracts)
                 {
-                    _harmony.Patch(
+                    int safePatchCount = CountExactPostfix(
                         contract.Target,
-                        postfix: new HarmonyMethod(contract.SafePostfix)
-                        {
-                            priority = Priority.Last
-                        });
+                        contract.SafePostfix,
+                        HarmonyId);
+                    if (safePatchCount > 1)
+                    {
+                        _harmony.Unpatch(contract.Target, contract.SafePostfix);
+                        safePatchCount = 0;
+                    }
+
+                    if (safePatchCount == 0)
+                    {
+                        _harmony.Patch(
+                            contract.Target,
+                            postfix: new HarmonyMethod(contract.SafePostfix)
+                            {
+                                priority = Priority.Last
+                            });
+                    }
+                }
+
+                if (contracts.Any(contract =>
+                    CountOwnedPostfix(contract.Target, CaptivityEventsHarmonyId) != 0 ||
+                    CountExactPostfix(
+                        contract.Target,
+                        contract.SafePostfix,
+                        HarmonyId) != 1))
+                {
+                    throw new InvalidOperationException(
+                        "The verified CharacterObject patch state was not reached.");
                 }
 
                 _characterSafetyInstalled = true;
-                Log("Replaced 3/3 destructive CharacterObject fallbacks with safe diagnostics.");
+                Log(firstInstallation
+                    ? "Replaced and verified 3/3 destructive CharacterObject fallbacks with safe diagnostics."
+                    : "Verified CharacterObject safety patches during " + stage +
+                      (removedOriginals.Count == 0
+                          ? "."
+                          : "; removed " + removedOriginals.Count +
+                            " re-applied Captivity Events postfix(es)."));
             }
             catch (Exception ex)
             {
-                foreach (CharacterPatchContract contract in contracts)
+                foreach (CharacterPatchContract contract in removedOriginals)
                 {
                     try
                     {
-                        _harmony.Unpatch(contract.Target, contract.SafePostfix);
-                        new Harmony(CaptivityEventsHarmonyId).Patch(
-                            contract.Target,
-                            postfix: new HarmonyMethod(contract.CaptivityEventsPostfix));
+                        if (CountExactPostfix(
+                                contract.Target,
+                                contract.SafePostfix,
+                                HarmonyId) == 0 &&
+                            !HasExactCaptivityEventsPostfix(
+                                contract.Target,
+                                contract.CaptivityEventsPostfix))
+                        {
+                            new Harmony(CaptivityEventsHarmonyId).Patch(
+                                contract.Target,
+                                postfix: new HarmonyMethod(contract.CaptivityEventsPostfix));
+                        }
                     }
                     catch
                     {
@@ -171,8 +225,9 @@ namespace CaptivityEvents_147Fix
                     }
                 }
 
-                Log("ERROR: safe CharacterObject patch transaction failed; attempted to " +
-                    "restore Captivity Events originals. " + ex.GetType().Name + ": " + ex.Message);
+                Log("ERROR: CharacterObject patch verification failed during " + stage +
+                    "; attempted to preserve a working fallback for every getter. " +
+                    ex.GetType().Name + ": " + ex.Message);
             }
         }
 
@@ -282,10 +337,25 @@ namespace CaptivityEvents_147Fix
 
         private static bool HasExactCaptivityEventsPostfix(MethodInfo target, MethodInfo patch)
         {
+            return CountExactPostfix(target, patch, CaptivityEventsHarmonyId) > 0;
+        }
+
+        private static int CountExactPostfix(
+            MethodInfo target,
+            MethodInfo patch,
+            string owner)
+        {
             Patches patchInfo = Harmony.GetPatchInfo(target);
-            return patchInfo?.Postfixes.Any(entry =>
-                string.Equals(entry.owner, CaptivityEventsHarmonyId, StringComparison.Ordinal) &&
-                entry.PatchMethod == patch) == true;
+            return patchInfo?.Postfixes.Count(entry =>
+                string.Equals(entry.owner, owner, StringComparison.Ordinal) &&
+                entry.PatchMethod == patch) ?? 0;
+        }
+
+        private static int CountOwnedPostfix(MethodInfo target, string owner)
+        {
+            Patches patchInfo = Harmony.GetPatchInfo(target);
+            return patchInfo?.Postfixes.Count(entry =>
+                string.Equals(entry.owner, owner, StringComparison.Ordinal)) ?? 0;
         }
 
         [HarmonyPriority(Priority.Last)]
@@ -411,19 +481,6 @@ namespace CaptivityEvents_147Fix
             }
 
             Log("SAFE FALLBACK: null CharacterObject." + propertyName + "; " + identity);
-            try
-            {
-                string label = SafeValue(() => character?.Name?.ToString());
-                string stringId = SafeValue(() => character?.StringId);
-                InformationManager.DisplayMessage(new InformationMessage(
-                    "Captivity Events safe fallback: " + propertyName +
-                    " was null for " + label + " [" + stringId + "]. See rgl_log.",
-                    Colors.Yellow));
-            }
-            catch
-            {
-                // A diagnostic message must never interrupt mission creation.
-            }
         }
 
         private static string DescribeCharacter(CharacterObject character)
