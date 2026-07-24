@@ -34,7 +34,7 @@ additional requirements they declare.
 | --- | :--- | --- | --- |
 | [Banner Kings Redux - Diplomacy Compatibility](mods/banner-kings-redux-diplomacy-compatibility/) | 2.1.0 | Bannerlord 1.4.7; Banner Kings Redux 1.9.33.5; Diplomacy Fork 1.4.1.0; Harmony 2.4.2 | Source plus runtime smoke test |
 | [Better Troop HUD - Bannerlord 1.4.7 Compatibility Port](mods/better-troop-hud-1.4.7/) | 1.1.0 | Bannerlord 1.4.7; upstream BetterTroopHUD 1.0.1 baseline | Port source plus source UI assets; generated game resources omitted |
-| [Relentless Smith - Banner Kings Redux Compatibility](mods/relentless-smith-bk-redux-compatibility/) | 1.0.1 | Bannerlord 1.4.7; Banner Kings Redux 1.9.33.5; Relentless Smith Concise 1.0.4 | Independent compatibility module plus proxy verifier |
+| [Relentless Smith - Banner Kings Redux Compatibility](mods/relentless-smith-bk-redux-compatibility/) | 1.0.2 | Bannerlord 1.4.7; Banner Kings Redux 1.9.33.5; Relentless Smith Concise 1.0.4 | Independent compatibility module plus proxy verifier |
 | [Captivity Events (Updated 1.4.7)](mods/captivity-events-1.4.7-compatibility-addon/) | 1.0.1 | Bannerlord 1.4.7; internal module version 1.4.7.2; Captivity Events 1.4.5.1400 | One consolidated `zCaptivityEvents` release; independent safety-layer source preserved here |
 
 These targets describe the preserved source snapshots. They are not a promise

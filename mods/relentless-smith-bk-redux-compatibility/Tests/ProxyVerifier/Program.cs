@@ -45,12 +45,33 @@ namespace ProxyVerifier
                 MethodInfo configure = RequireMethod(proxyType, "Configure", BindingFlags.Static | BindingFlags.NonPublic);
                 MethodInfo reset = RequireMethod(proxyType, "Reset", BindingFlags.Static | BindingFlags.NonPublic);
                 MethodInfo safePrefix = RequireMethod(proxyType, "Prefix", BindingFlags.Static | BindingFlags.Public);
+                Type selectionProxyType = RequireType(
+                    fixAssembly,
+                    "RelentlessSmithConciseBKReduxFixes.SmeltingSelectionProxy");
+                MethodInfo configureSelection = RequireMethod(
+                    selectionProxyType,
+                    "Configure",
+                    BindingFlags.Static | BindingFlags.NonPublic);
+                MethodInfo resetSelection = RequireMethod(
+                    selectionProxyType,
+                    "Reset",
+                    BindingFlags.Static | BindingFlags.NonPublic);
+                MethodInfo selectionPostfix = RequireMethod(
+                    selectionProxyType,
+                    "Postfix",
+                    BindingFlags.Static | BindingFlags.Public);
 
                 VerifyActualContracts(relentlessPath, configure, safePrefix, reset);
                 VerifyProxyBehavior(configure, safePrefix, reset);
-                VerifyCoordinatorReplacement(fixAssembly, relentlessPath, safePrefix);
+                VerifyActualSmeltingContract(configureSelection, resetSelection);
+                VerifySmeltingSelectionBehavior(configureSelection, selectionPostfix, resetSelection);
+                VerifyCoordinatorReplacement(
+                    fixAssembly,
+                    relentlessPath,
+                    safePrefix,
+                    selectionPostfix);
 
-                Console.WriteLine("PASS: contract binding, null/unrelated-perk bypass, relevant-call ref/exception semantics, exact owner replacement, metadata preservation, and rollback verified.");
+                Console.WriteLine("PASS: perk contract binding and replacement, smelting contract binding, automatic next-item reselection, metadata preservation, and rollback verified.");
                 return 0;
             }
             catch (Exception ex)
@@ -105,6 +126,47 @@ namespace ProxyVerifier
             }
         }
 
+        private static void VerifyActualSmeltingContract(
+            MethodInfo configureSelection,
+            MethodInfo resetSelection)
+        {
+            Type smeltingVmType = RequireType(
+                Assembly.Load("TaleWorlds.CampaignSystem.ViewModelCollection"),
+                "TaleWorlds.CampaignSystem.ViewModelCollection.WeaponCrafting.Smelting.SmeltingVM");
+            configureSelection.Invoke(null, new object[] { smeltingVmType });
+            resetSelection.Invoke(null, null);
+        }
+
+        private static void VerifySmeltingSelectionBehavior(
+            MethodInfo configureSelection,
+            MethodInfo selectionPostfix,
+            MethodInfo resetSelection)
+        {
+            configureSelection.Invoke(null, new object[] { typeof(FakeSmeltingVm) });
+            try
+            {
+                var vm = new FakeSmeltingVm
+                {
+                    CurrentSelectedItem = new FakeSmeltingItem()
+                };
+
+                selectionPostfix.Invoke(null, new object[] { vm });
+                Require(vm.CurrentSelectedItem.IsSelected, "The visually cleared next item was not reselected.");
+                Require(vm.SelectionCallCount == 1, "Bannerlord's selection callback was not invoked exactly once.");
+
+                selectionPostfix.Invoke(null, new object[] { vm });
+                Require(vm.SelectionCallCount == 1, "An already selected item was selected a second time.");
+
+                vm.CurrentSelectedItem = null;
+                selectionPostfix.Invoke(null, new object[] { vm });
+                Require(vm.SelectionCallCount == 1, "A null current item invoked the selection callback.");
+            }
+            finally
+            {
+                resetSelection.Invoke(null, null);
+            }
+        }
+
         private static void VerifyProxyBehavior(
             MethodInfo configure,
             MethodInfo safePrefix,
@@ -149,19 +211,38 @@ namespace ProxyVerifier
             }
         }
 
-        private static void VerifyCoordinatorReplacement(Assembly fixAssembly, string relentlessPath, MethodInfo safePrefix)
+        private static void VerifyCoordinatorReplacement(
+            Assembly fixAssembly,
+            string relentlessPath,
+            MethodInfo safePrefix,
+            MethodInfo selectionPostfix)
         {
             Assembly relentlessAssembly = Assembly.LoadFrom(relentlessPath);
             Type unsafeType = RequireType(relentlessAssembly, "RelentlessSmithConcise.Patches.PerkObject_Initialize_Patch");
             MethodInfo unsafePrefix = RequireMethod(unsafeType, "Prefix", BindingFlags.Static | BindingFlags.NonPublic);
+            Type unsafeSmeltingType = RequireType(
+                relentlessAssembly,
+                "RelentlessSmithConcise.Patches.SmeltingVM_TrySmeltingSelectedItems_BulkSmelt_Patch");
+            MethodInfo unsafeSmeltingPrefix = RequireMethod(
+                unsafeSmeltingType,
+                "Prefix",
+                BindingFlags.Static | BindingFlags.NonPublic);
             Type perkType = RequireType(
                 Assembly.Load("TaleWorlds.CampaignSystem"),
                 "TaleWorlds.CampaignSystem.CharacterDevelopment.PerkObject");
             MethodInfo target = perkType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Single(method => method.Name == "Initialize" && method.GetParameters().Length == 14 && method.GetParameters().Any(parameter => parameter.Name == "skill"));
+            Type smeltingVmType = RequireType(
+                Assembly.Load("TaleWorlds.CampaignSystem.ViewModelCollection"),
+                "TaleWorlds.CampaignSystem.ViewModelCollection.WeaponCrafting.Smelting.SmeltingVM");
+            MethodInfo smeltingTarget = smeltingVmType.GetMethod(
+                "TrySmeltingSelectedItems",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            Require(smeltingTarget != null, "Could not resolve SmeltingVM.TrySmeltingSelectedItems.");
 
             const string upstreamOwner = "relentless.smith.concise";
+            const string fixOwner = "community.bannerlord.relentless-smith-concise.bk-redux.fixes";
             var upstreamHarmony = new Harmony(upstreamOwner);
             var originalMetadata = new HarmonyMethod(unsafePrefix)
             {
@@ -178,7 +259,13 @@ namespace ProxyVerifier
             try
             {
                 upstreamHarmony.Patch(target, prefix: originalMetadata);
+                upstreamHarmony.Patch(
+                    smeltingTarget,
+                    prefix: new HarmonyMethod(unsafeSmeltingPrefix));
                 Require(FindPrefix(target, unsafePrefix, upstreamOwner) != null, "Verifier could not install the original upstream prefix.");
+                Require(
+                    FindPrefix(smeltingTarget, unsafeSmeltingPrefix, upstreamOwner) != null,
+                    "Verifier could not install the original bulk-smelting prefix.");
 
                 apply.Invoke(null, null);
                 coordinatorApplied = true;
@@ -188,6 +275,12 @@ namespace ProxyVerifier
                 Require(replacement.priority == originalMetadata.priority, "Coordinator changed Harmony priority.");
                 Require(replacement.before.SequenceEqual(originalMetadata.before), "Coordinator changed Harmony before metadata.");
                 Require(replacement.after.SequenceEqual(originalMetadata.after), "Coordinator changed Harmony after metadata.");
+                Patch selection = FindPostfix(smeltingTarget, selectionPostfix, fixOwner);
+                Require(selection != null, "Coordinator did not install the smelting-selection postfix.");
+                Require(selection.priority == Priority.Last, "Smelting-selection postfix does not run at the final priority.");
+                Require(
+                    selection.after.Contains(upstreamOwner),
+                    "Smelting-selection postfix lost its explicit ordering after Relentless Smith.");
 
                 unapply.Invoke(null, null);
                 coordinatorApplied = false;
@@ -197,6 +290,9 @@ namespace ProxyVerifier
                 Require(restored.priority == originalMetadata.priority, "Rollback changed Harmony priority.");
                 Require(restored.before.SequenceEqual(originalMetadata.before), "Rollback changed Harmony before metadata.");
                 Require(restored.after.SequenceEqual(originalMetadata.after), "Rollback changed Harmony after metadata.");
+                Require(
+                    FindPostfix(smeltingTarget, selectionPostfix, fixOwner) == null,
+                    "Coordinator left the smelting-selection postfix active after unload.");
             }
             finally
             {
@@ -212,6 +308,8 @@ namespace ProxyVerifier
                 }
                 upstreamHarmony.Unpatch(target, unsafePrefix);
                 upstreamHarmony.Unpatch(target, safePrefix);
+                upstreamHarmony.Unpatch(smeltingTarget, unsafeSmeltingPrefix);
+                new Harmony(fixOwner).Unpatch(smeltingTarget, selectionPostfix);
             }
         }
 
@@ -221,6 +319,15 @@ namespace ProxyVerifier
             return patches == null
                 ? null
                 : patches.Prefixes.SingleOrDefault(patch => patch.PatchMethod == patchMethod && patch.owner == owner);
+        }
+
+        private static Patch FindPostfix(MethodBase target, MethodInfo patchMethod, string owner)
+        {
+            Patches patches = Harmony.GetPatchInfo(target);
+            return patches == null
+                ? null
+                : patches.Postfixes.SingleOrDefault(
+                    patch => patch.PatchMethod == patchMethod && patch.owner == owner);
         }
 
         private static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
@@ -315,6 +422,25 @@ namespace ProxyVerifier
                 primaryDescription = "primary-updated";
                 secondaryDescription = "secondary-updated";
             }
+        }
+
+        private sealed class FakeSmeltingVm
+        {
+            public FakeSmeltingItem CurrentSelectedItem { get; set; }
+
+            internal int SelectionCallCount { get; private set; }
+
+            private void OnItemSelection(FakeSmeltingItem item)
+            {
+                CurrentSelectedItem = item;
+                CurrentSelectedItem.IsSelected = true;
+                SelectionCallCount++;
+            }
+        }
+
+        private sealed class FakeSmeltingItem
+        {
+            public bool IsSelected { get; set; }
         }
     }
 }
