@@ -26,6 +26,17 @@ The manifest declares Harmony, ButterLib, UIExtenderEx, Mod Configuration Menu,
 and the standard Bannerlord single-player modules. Obtain those dependencies
 from their own authors; none are bundled here.
 
+The Bannerlord 1.4.7 port was validated with:
+
+- Bannerlord.Harmony `v2.4.2`
+- ButterLib `v2.11.1`
+- UIExtenderEx `v2.13.3`
+- Mod Configuration Menu `v5.12.2`
+
+The manifest preserves the older upstream minimum-version declarations for
+launcher compatibility. Those older dependency combinations were not the
+validated runtime stack for this port.
+
 ## Build and packaging
 
 Set `BANNERLORD_GAME_DIR` to a Bannerlord v1.4.7 installation. For a compile-only
