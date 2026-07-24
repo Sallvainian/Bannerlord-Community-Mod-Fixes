@@ -19,6 +19,13 @@ unrelated perks, invokes the original prefix for `PracticalRefiner`,
 `PracticalSmelter`, and `PracticalSmith`, and preserves the original by-reference
 changes and exception behavior for those relevant calls.
 
+Relentless Smith also refreshes the smelting list after an operation, assigns
+the first remaining row as the current item, then clears the visual selection
+state. That forces the player to click a row before every subsequent smelt.
+This module now restores Bannerlord's own `OnItemSelection` callback only when
+Relentless Smith leaves the current row visually unselected. Bulk, Ctrl, and
+stack-selection behavior remains owned by Relentless Smith.
+
 ## Installation order
 
 Use a compiled package and enable it after Banner Kings Redux and Relentless
@@ -38,8 +45,9 @@ The module log is written to:
 
 Set `BANNERLORD_GAME_DIR` to the Bannerlord v1.4.7 directory and build the
 project under `Source`. `Tests/ProxyVerifier` contains the source for the
-contract/proxy verifier; it expects paths to a built compatibility DLL, the
-installed Relentless Smith DLL, and the game root when run.
+contract/proxy verifier; it covers both the perk compatibility proxy and
+automatic smelting reselection, and expects paths to a built compatibility DLL,
+the installed Relentless Smith DLL, and the game root when run.
 
 ## Credits and status
 

@@ -11,4 +11,11 @@ This module leaves both upstream DLLs untouched. At the initial module screen it
 - copies its by-reference description/name changes back to the game arguments; and
 - preserves the original exception and stack behavior whenever the original prefix has relevant work.
 
+Relentless Smith's bulk-smelting prefix also clears every row's visual
+selection after refreshing the list, even though it assigns the first
+remaining row as `CurrentSelectedItem`. This module installs a contract-checked
+postfix that calls Bannerlord's own `OnItemSelection` method only when the
+current row was left visually unselected. Relentless Smith's bulk, Ctrl, and
+stack-smelting behavior remains unchanged.
+
 Log: `%LOCALAPPDATA%\Mount and Blade II Bannerlord\Logs\RelentlessSmithConcise.BKRedux.Fixes.log`

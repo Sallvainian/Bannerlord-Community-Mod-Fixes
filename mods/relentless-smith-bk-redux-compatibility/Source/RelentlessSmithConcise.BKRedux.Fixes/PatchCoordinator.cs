@@ -11,13 +11,21 @@ namespace RelentlessSmithConciseBKReduxFixes
         internal const string HarmonyId = "community.bannerlord.relentless-smith-concise.bk-redux.fixes";
         private const string RelentlessHarmonyId = "relentless.smith.concise";
         private const string UnsafePatchTypeName = "RelentlessSmithConcise.Patches.PerkObject_Initialize_Patch";
+        private const string SmeltingPatchTypeName =
+            "RelentlessSmithConcise.Patches.SmeltingVM_TrySmeltingSelectedItems_BulkSmelt_Patch";
+        private const string SmeltingVmTypeName =
+            "TaleWorlds.CampaignSystem.ViewModelCollection.WeaponCrafting.Smelting.SmeltingVM";
 
         private static Harmony _harmony;
         private static MethodBase _target;
         private static MethodInfo _unsafePrefix;
         private static MethodInfo _safePrefix;
         private static Patch _unsafePatchMetadata;
+        private static MethodBase _smeltingTarget;
+        private static MethodInfo _unsafeSmeltingPrefix;
+        private static MethodInfo _selectionPostfix;
         private static bool _replaced;
+        private static bool _selectionPatched;
         private static bool _applied;
 
         internal static void Apply()
@@ -30,79 +38,14 @@ namespace RelentlessSmithConciseBKReduxFixes
             _harmony = new Harmony(HarmonyId);
             try
             {
-                Type unsafePatchType = AccessTools.TypeByName(UnsafePatchTypeName);
-                _unsafePrefix = unsafePatchType == null
-                    ? null
-                    : AccessTools.DeclaredMethod(unsafePatchType, "Prefix");
-
-                if (_unsafePrefix == null)
-                {
-                    FixLog.Warn("Relentless Smith's PerkObject.Initialize prefix was not found. The supplied build may already be fixed; no replacement was installed.");
-                    _applied = true;
-                    return;
-                }
-                if (!_unsafePrefix.IsStatic || _unsafePrefix.ReturnType != typeof(void))
-                {
-                    throw new InvalidOperationException("The Relentless Smith prefix has an unexpected method contract.");
-                }
-
-                PatchBinding[] matchingBindings = Harmony.GetAllPatchedMethods()
-                    .SelectMany(GetUnsafeBindings)
-                    .ToArray();
-                if (matchingBindings.Length == 0)
-                {
-                    FixLog.Warn("Relentless Smith's unsafe prefix is not active. No replacement was necessary.");
-                    _applied = true;
-                    return;
-                }
-                if (matchingBindings.Length != 1)
-                {
-                    throw new InvalidOperationException(
-                        "Expected one active binding for the Relentless Smith prefix, but found " + matchingBindings.Length + ".");
-                }
-                if (!string.Equals(matchingBindings[0].Patch.owner, RelentlessHarmonyId, StringComparison.Ordinal))
-                {
-                    throw new InvalidOperationException(
-                        "The matching Relentless Smith prefix is owned by '" + matchingBindings[0].Patch.owner +
-                        "' instead of the expected Harmony owner '" + RelentlessHarmonyId + "'.");
-                }
-
-                _target = matchingBindings[0].Target;
-                _unsafePatchMetadata = matchingBindings[0].Patch;
-                ValidateTargetContract(_target);
-                _safePrefix = AccessTools.DeclaredMethod(typeof(SafePerkInitializeProxy), nameof(SafePerkInitializeProxy.Prefix));
-                if (_safePrefix == null)
-                {
-                    throw new MissingMethodException(typeof(SafePerkInitializeProxy).FullName, nameof(SafePerkInitializeProxy.Prefix));
-                }
-
-                SafePerkInitializeProxy.Configure(_target, _unsafePrefix);
-                _replaced = true;
-                _harmony.Unpatch(_target, _unsafePrefix);
-                if (HasUnsafePrefix(_target))
-                {
-                    throw new InvalidOperationException("Harmony reported that the unsafe prefix remained active after the targeted unpatch.");
-                }
-
-                // Keep the upstream owner as well as its ordering metadata so any
-                // third-party before/after constraints continue to address this slot.
-                new Harmony(RelentlessHarmonyId).Patch(
-                    _target,
-                    prefix: CopyPatchMetadata(_safePrefix, _unsafePatchMetadata));
-                if (!HasPatch(_target, _safePrefix, RelentlessHarmonyId))
-                {
-                    throw new InvalidOperationException("The null-safe replacement prefix was not present after Harmony patching.");
-                }
-
+                ApplyPerkCompatibilityGuard();
+                ApplySmeltingSelectionFix();
                 _applied = true;
-                FixLog.Info(
-                    "Replaced only " + UnsafePatchTypeName + ".Prefix on " + Describe(_target) +
-                    ". Only Relentless Smith's three rewritten vanilla perk IDs invoke the original prefix; unrelated Banner Kings perks bypass its startup-unsafe DefaultSkills lookup.");
             }
             catch (Exception ex)
             {
                 RollBackPartialApply();
-                FixLog.Error("Could not install the Relentless Smith / Banner Kings Redux compatibility guard.", ex);
+                FixLog.Error("Could not install the Relentless Smith / Banner Kings Redux fixes.", ex);
             }
         }
 
@@ -110,12 +53,16 @@ namespace RelentlessSmithConciseBKReduxFixes
         {
             try
             {
+                if (_smeltingTarget != null && _selectionPostfix != null && _harmony != null)
+                {
+                    _harmony.Unpatch(_smeltingTarget, _selectionPostfix);
+                }
                 if (_target != null && _safePrefix != null && _harmony != null)
                 {
                     _harmony.Unpatch(_target, _safePrefix);
                 }
                 RestoreOriginalPrefixIfNeeded();
-                FixLog.Info("Compatibility guard removed during module unload.");
+                FixLog.Info("Compatibility and smelting-selection fixes removed during module unload.");
             }
             catch (Exception ex)
             {
@@ -123,19 +70,173 @@ namespace RelentlessSmithConciseBKReduxFixes
             }
             finally
             {
+                SmeltingSelectionProxy.Reset();
                 SafePerkInitializeProxy.Reset();
                 _harmony = null;
                 _target = null;
                 _unsafePrefix = null;
                 _safePrefix = null;
                 _unsafePatchMetadata = null;
+                _smeltingTarget = null;
+                _unsafeSmeltingPrefix = null;
+                _selectionPostfix = null;
                 _replaced = false;
+                _selectionPatched = false;
                 _applied = false;
             }
         }
 
+        private static void ApplyPerkCompatibilityGuard()
+        {
+            Type unsafePatchType = AccessTools.TypeByName(UnsafePatchTypeName);
+            _unsafePrefix = unsafePatchType == null
+                ? null
+                : AccessTools.DeclaredMethod(unsafePatchType, "Prefix");
+
+            if (_unsafePrefix == null)
+            {
+                FixLog.Warn("Relentless Smith's PerkObject.Initialize prefix was not found. The supplied build may already be fixed; no perk replacement was installed.");
+                return;
+            }
+            if (!_unsafePrefix.IsStatic || _unsafePrefix.ReturnType != typeof(void))
+            {
+                throw new InvalidOperationException("The Relentless Smith perk prefix has an unexpected method contract.");
+            }
+
+            PatchBinding[] matchingBindings = Harmony.GetAllPatchedMethods()
+                .SelectMany(GetUnsafeBindings)
+                .ToArray();
+            if (matchingBindings.Length == 0)
+            {
+                FixLog.Warn("Relentless Smith's unsafe perk prefix is not active. No perk replacement was necessary.");
+                return;
+            }
+            if (matchingBindings.Length != 1)
+            {
+                throw new InvalidOperationException(
+                    "Expected one active binding for the Relentless Smith perk prefix, but found " + matchingBindings.Length + ".");
+            }
+            if (!string.Equals(matchingBindings[0].Patch.owner, RelentlessHarmonyId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    "The matching Relentless Smith perk prefix is owned by '" + matchingBindings[0].Patch.owner +
+                    "' instead of the expected Harmony owner '" + RelentlessHarmonyId + "'.");
+            }
+
+            _target = matchingBindings[0].Target;
+            _unsafePatchMetadata = matchingBindings[0].Patch;
+            ValidateTargetContract(_target);
+            _safePrefix = AccessTools.DeclaredMethod(typeof(SafePerkInitializeProxy), nameof(SafePerkInitializeProxy.Prefix));
+            if (_safePrefix == null)
+            {
+                throw new MissingMethodException(typeof(SafePerkInitializeProxy).FullName, nameof(SafePerkInitializeProxy.Prefix));
+            }
+
+            SafePerkInitializeProxy.Configure(_target, _unsafePrefix);
+            _replaced = true;
+            _harmony.Unpatch(_target, _unsafePrefix);
+            if (HasUnsafePrefix(_target))
+            {
+                throw new InvalidOperationException("Harmony reported that the unsafe perk prefix remained active after the targeted unpatch.");
+            }
+
+            // Keep the upstream owner as well as its ordering metadata so any
+            // third-party before/after constraints continue to address this slot.
+            new Harmony(RelentlessHarmonyId).Patch(
+                _target,
+                prefix: CopyPatchMetadata(_safePrefix, _unsafePatchMetadata));
+            if (!HasPatch(_target, _safePrefix, RelentlessHarmonyId, HarmonyPatchType.Prefix))
+            {
+                throw new InvalidOperationException("The null-safe replacement perk prefix was not present after Harmony patching.");
+            }
+
+            FixLog.Info(
+                "Replaced only " + UnsafePatchTypeName + ".Prefix on " + Describe(_target) +
+                ". Only Relentless Smith's three rewritten vanilla perk IDs invoke the original prefix; unrelated Banner Kings perks bypass its startup-unsafe DefaultSkills lookup.");
+        }
+
+        private static void ApplySmeltingSelectionFix()
+        {
+            Type smeltingPatchType = AccessTools.TypeByName(SmeltingPatchTypeName);
+            _unsafeSmeltingPrefix = smeltingPatchType == null
+                ? null
+                : AccessTools.DeclaredMethod(smeltingPatchType, "Prefix");
+            if (_unsafeSmeltingPrefix == null)
+            {
+                FixLog.Warn("Relentless Smith's bulk-smelting prefix was not found. The supplied build may already restore selection; no smelting-selection fix was installed.");
+                return;
+            }
+            if (!_unsafeSmeltingPrefix.IsStatic || _unsafeSmeltingPrefix.ReturnType != typeof(bool))
+            {
+                throw new InvalidOperationException("The Relentless Smith bulk-smelting prefix has an unexpected method contract.");
+            }
+
+            PatchBinding[] matchingBindings = Harmony.GetAllPatchedMethods()
+                .SelectMany(GetUnsafeSmeltingBindings)
+                .ToArray();
+            if (matchingBindings.Length == 0)
+            {
+                FixLog.Warn("Relentless Smith's bulk-smelting prefix is not active. No smelting-selection fix was necessary.");
+                return;
+            }
+            if (matchingBindings.Length != 1)
+            {
+                throw new InvalidOperationException(
+                    "Expected one active binding for the Relentless Smith bulk-smelting prefix, but found " +
+                    matchingBindings.Length + ".");
+            }
+            if (!string.Equals(matchingBindings[0].Patch.owner, RelentlessHarmonyId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    "The matching Relentless Smith bulk-smelting prefix is owned by '" +
+                    matchingBindings[0].Patch.owner + "' instead of the expected Harmony owner '" +
+                    RelentlessHarmonyId + "'.");
+            }
+
+            _smeltingTarget = matchingBindings[0].Target;
+            ValidateSmeltingTargetContract(_smeltingTarget);
+            SmeltingSelectionProxy.Configure(_smeltingTarget.DeclaringType);
+            _selectionPostfix = AccessTools.DeclaredMethod(
+                typeof(SmeltingSelectionProxy),
+                nameof(SmeltingSelectionProxy.Postfix));
+            if (_selectionPostfix == null)
+            {
+                throw new MissingMethodException(
+                    typeof(SmeltingSelectionProxy).FullName,
+                    nameof(SmeltingSelectionProxy.Postfix));
+            }
+
+            var postfix = new HarmonyMethod(_selectionPostfix)
+            {
+                priority = Priority.Last,
+                after = new[] { RelentlessHarmonyId }
+            };
+            _harmony.Patch(_smeltingTarget, postfix: postfix);
+            _selectionPatched = true;
+            if (!HasPatch(_smeltingTarget, _selectionPostfix, HarmonyId, HarmonyPatchType.Postfix))
+            {
+                throw new InvalidOperationException("The automatic smelting-selection postfix was not present after Harmony patching.");
+            }
+
+            FixLog.Info(
+                "Installed automatic next-item selection after " + Describe(_smeltingTarget) +
+                ". Relentless Smith's bulk-smelting behavior remains active; the selected row is restored only when its prefix leaves the current item visually unselected.");
+        }
+
         private static void RollBackPartialApply()
         {
+            try
+            {
+                if (_selectionPatched && _smeltingTarget != null && _selectionPostfix != null && _harmony != null)
+                {
+                    _harmony.Unpatch(_smeltingTarget, _selectionPostfix);
+                }
+            }
+            catch (Exception ex)
+            {
+                FixLog.Error("Failed to remove a partially installed smelting-selection postfix.", ex);
+            }
+
             try
             {
                 if (_target != null && _safePrefix != null && _harmony != null)
@@ -156,6 +257,7 @@ namespace RelentlessSmithConciseBKReduxFixes
             {
                 FixLog.Error("Failed to restore Relentless Smith's original prefix after a partial installation.", ex);
             }
+            SmeltingSelectionProxy.Reset();
             SafePerkInitializeProxy.Reset();
         }
 
@@ -183,6 +285,19 @@ namespace RelentlessSmithConciseBKReduxFixes
                 yield break;
             }
             foreach (Patch patch in patches.Prefixes.Where(patch => patch.PatchMethod == _unsafePrefix))
+            {
+                yield return new PatchBinding(target, patch);
+            }
+        }
+
+        private static IEnumerable<PatchBinding> GetUnsafeSmeltingBindings(MethodBase target)
+        {
+            Patches patches = Harmony.GetPatchInfo(target);
+            if (patches == null)
+            {
+                yield break;
+            }
+            foreach (Patch patch in patches.Prefixes.Where(patch => patch.PatchMethod == _unsafeSmeltingPrefix))
             {
                 yield return new PatchBinding(target, patch);
             }
@@ -221,6 +336,23 @@ namespace RelentlessSmithConciseBKReduxFixes
             }
         }
 
+        private static void ValidateSmeltingTargetContract(MethodBase target)
+        {
+            ParameterInfo[] parameters = target.GetParameters();
+            if (target.DeclaringType == null ||
+                target.DeclaringType.FullName != SmeltingVmTypeName ||
+                target.Name != "TrySmeltingSelectedItems" ||
+                !(target is MethodInfo methodInfo) ||
+                methodInfo.ReturnType != typeof(void) ||
+                parameters.Length != 1 ||
+                parameters[0].ParameterType.FullName != "TaleWorlds.CampaignSystem.Hero")
+            {
+                throw new InvalidOperationException(
+                    "The active Relentless Smith bulk-smelting patch target is not the expected " +
+                    "SmeltingVM.TrySmeltingSelectedItems(Hero) method: " + Describe(target) + ".");
+            }
+        }
+
         private static HarmonyMethod CopyPatchMetadata(MethodInfo method, Patch source)
         {
             var result = new HarmonyMethod(method);
@@ -241,11 +373,25 @@ namespace RelentlessSmithConciseBKReduxFixes
             return patches != null && patches.Prefixes.Any(patch => patch.PatchMethod == _unsafePrefix);
         }
 
-        private static bool HasPatch(MethodBase method, MethodInfo patchMethod, string owner)
+        private static bool HasPatch(
+            MethodBase method,
+            MethodInfo patchMethod,
+            string owner,
+            HarmonyPatchType patchType)
         {
             Patches patches = Harmony.GetPatchInfo(method);
-            return patches != null && patches.Prefixes.Any(
-                patch => patch.PatchMethod == patchMethod && string.Equals(patch.owner, owner, StringComparison.Ordinal));
+            if (patches == null)
+            {
+                return false;
+            }
+            IEnumerable<Patch> selected = patchType == HarmonyPatchType.Prefix
+                ? patches.Prefixes
+                : patchType == HarmonyPatchType.Postfix
+                    ? patches.Postfixes
+                    : Enumerable.Empty<Patch>();
+            return selected.Any(
+                patch => patch.PatchMethod == patchMethod &&
+                    string.Equals(patch.owner, owner, StringComparison.Ordinal));
         }
 
         private static string Describe(MethodBase method)
