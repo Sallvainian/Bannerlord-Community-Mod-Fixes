@@ -60,7 +60,7 @@ jobs:
               archive_prefix="Relentless-Smith-BK-Redux-Compatibility-v"
               module_root="RelentlessSmithConcise.BKRedux.Fixes"
               dll_name="RelentlessSmithConcise.BKRedux.Fixes.dll"
-              display_name="Relentless Smith - Banner Kings Redux Compatibility"
+              display_name="Relentless Smith - BK Redux Compat"
               file_id="$FILE_ID_RELENTLESS_SMITH"
               ;;
             captivity-events-1.4.7-v*)
