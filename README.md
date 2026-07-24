@@ -11,8 +11,8 @@ archives, or local game installations.
 | --- | :--- | --- |
 | Banner Kings Redux - Diplomacy Compatibility | 2.1.0 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/bk-diplomacy-v2.1.0/Banner-Kings-Redux-Diplomacy-Compatibility-v2.1.0.zip) |
 | Better Troop HUD - Bannerlord 1.4.7 Compatibility Port | 1.1.0 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/better-troop-hud-v1.1.0/Better-Troop-HUD-1.4.7-v1.1.0.zip) |
-| Relentless Smith - Banner Kings Redux Compatibility | 1.0.1 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/relentless-smith-bk-redux-v1.0.1/Relentless-Smith-BK-Redux-Compatibility-v1.0.1.zip) |
-| Captivity Events (Updated 1.4.7) | 1.0.1 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/captivity-events-1.4.7-v1.0.1/Captivity-Events-Updated-1.4.7-v1.0.1.zip) |
+| Relentless Smith - Banner Kings Redux Compatibility | 1.0.3 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/relentless-smith-bk-redux-v1.0.3/Relentless-Smith-BK-Redux-Compatibility-v1.0.3.zip) |
+| Captivity Events (Updated 1.4.7) | 1.0.2 | [Download ZIP](https://github.com/Sallvainian/Bannerlord-Community-Mod-Fixes/releases/download/captivity-events-1.4.7-v1.0.2/Captivity-Events-Updated-1.4.7-v1.0.2.zip) |
 
 ### Requirements and original mods
 
@@ -103,8 +103,8 @@ Release tags and ZIP names must follow these pairs:
 | --- | --- |
 | `bk-diplomacy-v2.1.0` | `Banner-Kings-Redux-Diplomacy-Compatibility-v2.1.0.zip` |
 | `better-troop-hud-v1.1.0` | `Better-Troop-HUD-1.4.7-v1.1.0.zip` |
-| `relentless-smith-bk-redux-v1.0.1` | `Relentless-Smith-BK-Redux-Compatibility-v1.0.1.zip` |
-| `captivity-events-1.4.7-v1.0.1` | `Captivity-Events-Updated-1.4.7-v1.0.1.zip` |
+| `relentless-smith-bk-redux-v1.0.3` | `Relentless-Smith-BK-Redux-Compatibility-v1.0.3.zip` |
+| `captivity-events-1.4.7-v1.0.2` | `Captivity-Events-Updated-1.4.7-v1.0.2.zip` |
 
 Configure the repository Actions secret `NEXUSMODS_API_KEY` and these Actions
 variables before running the workflow:
