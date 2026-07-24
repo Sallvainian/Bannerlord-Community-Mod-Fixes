@@ -9,8 +9,8 @@ license grant. Apply the license and notices in the relevant project directory.
 | --- | --- | --- |
 | Banner Kings Redux - Diplomacy Compatibility | MIT, copyright 2026 Sallvainian | No Banner Kings, Diplomacy, Harmony, or TaleWorlds binaries/source are included. Their names and method contracts are referenced only for interoperability. |
 | Better Troop HUD 1.4.7 port | Haarrdy's MIT license is preserved for the upstream code and permitted modifications. | The upstream README states that the icons are derived from TaleWorlds work and are not covered by the MIT license. Those source images are explicitly identified in the project's notices. Generated `.tpac` and `.rdc` files are not tracked. |
-| Relentless Smith - Banner Kings Redux Compatibility | MIT, copyright 2026 Sallvainian | Independently written interoperability code. No Relentless Smith or Banner Kings Redux DLL/source is included. The available local evidence did not establish the Relentless Smith author's identity, so this repository does not invent one. |
-| Captivity Events (Updated 1.4.7) | MIT, copyright 2026 Sallvainian | Independently written add-on. No Captivity Events source, events, images, or binaries are included or relicensed. |
+| Relentless Smith - Banner Kings Redux Compatibility | MIT, copyright 2026 Sallvainian | Independently written interoperability code. No Relentless Smith or Banner Kings Redux DLL/source is included. Relentless Smith Concise is credited to Steam Workshop creator dirty kebab. |
+| Captivity Events (Updated 1.4.7) | MIT, copyright 2026 Sallvainian | Independently written add-on. No Captivity Events source, events, images, or binaries are included or relicensed. The original Nexus page credits BadListener as creator and TheBadListener as uploader. |
 
 ## Better Troop HUD provenance
 

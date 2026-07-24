@@ -24,6 +24,10 @@ changes and exception behavior for those relevant calls.
 Use a compiled package and enable it after Banner Kings Redux and Relentless
 Smith Concise. Do not install this source tree directly into `Modules`.
 
+The Relentless Smith Concise Workshop item is currently unavailable. This patch
+requires an existing `v1.0.4` installation and does not include or redistribute
+any Relentless Smith files.
+
 The module log is written to:
 
 ```text
@@ -40,7 +44,7 @@ installed Relentless Smith DLL, and the game root when run.
 ## Credits and status
 
 This is independently written interoperability code. It does not include or
-claim ownership of Relentless Smith Concise or Banner Kings Redux. The preserved
-materials establish the installed Relentless Smith module and Workshop item but
-do not reliably establish its original author's identity, so this repository
-does not guess. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+claim ownership of Relentless Smith Concise or Banner Kings Redux. Relentless
+Smith Concise is credited to its Steam Workshop creator,
+[dirty kebab](https://steamcommunity.com/sharedfiles/filedetails/?id=3637912777).
+See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -32,6 +32,10 @@ enable the single `zCaptivityEvents` module. Do not install this source tree
 directly and do not combine the consolidated release with the old standalone
 safety-fix ZIP.
 
+Bannerlord.Harmony `v2.4.2` and Mod Configuration Menu `v5.11.4` or newer are
+required. The MCM dependency is intentionally retained to provide the original
+mod's configuration experience.
+
 ## Building
 
 Set `BANNERLORD_GAME_DIR` to a Bannerlord v1.4.7 installation and build
@@ -42,7 +46,8 @@ runtime and is not a compile-time repository dependency.
 
 ## License and credits
 
-The independently written add-on source is MIT licensed. Captivity Events
-remains the work of its own author and contributors under their own terms; it
-is neither copied nor relicensed here. See
+The independently written add-on source is MIT licensed. Captivity Events was
+created by BadListener and uploaded to Nexus Mods by TheBadListener; it remains
+their work under its original terms and is neither copied nor relicensed here.
+See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

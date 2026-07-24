@@ -29,6 +29,7 @@ $metadata = switch ($Target) {
                 '[Banner Kings Redux](https://github.com/GIO443/bannerlord-banner-kings-redux/releases/tag/v1.9.33.5) `v1.9.33.5`'
                 '[Diplomacy Fork](https://github.com/adwitkow/Bannerlord.Diplomacy/releases/tag/v1.4.1.0) `v1.4.1.0`'
             )
+            DependencyNotes = @()
             Upstreams = @(
                 '[Banner Kings Redux by GIO443](https://github.com/GIO443/bannerlord-banner-kings-redux)'
                 '[Diplomacy Fork](https://github.com/adwitkow/Bannerlord.Diplomacy)'
@@ -42,10 +43,13 @@ $metadata = switch ($Target) {
             ProjectPath = 'mods/better-troop-hud-1.4.7'
             TagFormat = 'better-troop-hud-v{0}'
             Dependencies = @(
-                '[Bannerlord.Harmony](https://www.nexusmods.com/mountandblade2bannerlord/mods/2006) `v2.2.2+`'
-                '[ButterLib](https://www.nexusmods.com/mountandblade2bannerlord/mods/2018) `v2.8.0+`'
-                '[UIExtenderEx](https://www.nexusmods.com/mountandblade2bannerlord/mods/2102) `v2.8.0+`'
-                '[Mod Configuration Menu](https://www.nexusmods.com/mountandblade2bannerlord/mods/612) `v5.7.1+`'
+                '[Bannerlord.Harmony](https://www.nexusmods.com/mountandblade2bannerlord/mods/2006) `v2.4.2`'
+                '[ButterLib](https://www.nexusmods.com/mountandblade2bannerlord/mods/2018) `v2.11.1`'
+                '[UIExtenderEx](https://www.nexusmods.com/mountandblade2bannerlord/mods/2102) `v2.13.3`'
+                '[Mod Configuration Menu](https://www.nexusmods.com/mountandblade2bannerlord/mods/612) `v5.12.2`'
+            )
+            DependencyNotes = @(
+                'These are the dependency versions used to validate the Bannerlord 1.4.7 port. The module manifest preserves older upstream minimum-version declarations, but those older combinations were not the validated runtime stack.'
             )
             Upstreams = @(
                 '[Original Better Troop HUD by Haarrdy](https://github.com/Haarrdy/MB-BetterTroopHUD)'
@@ -61,6 +65,9 @@ $metadata = switch ($Target) {
                 '[Banner Kings Redux](https://github.com/GIO443/bannerlord-banner-kings-redux/releases/tag/v1.9.33.5) `v1.9.33.5`'
                 '[Relentless Smith Concise](https://steamcommunity.com/sharedfiles/filedetails/?id=3637912777) `v1.0.4`'
             )
+            DependencyNotes = @(
+                'The Relentless Smith Concise Workshop item is currently unavailable. This patch requires an existing v1.0.4 installation and does not include or redistribute Relentless Smith files.'
+            )
             Upstreams = @(
                 '[Original Relentless Smith Concise by dirty kebab](https://steamcommunity.com/sharedfiles/filedetails/?id=3637912777)'
                 '[Banner Kings Redux by GIO443](https://github.com/GIO443/bannerlord-banner-kings-redux)'
@@ -74,10 +81,13 @@ $metadata = switch ($Target) {
             TagFormat = 'captivity-events-1.4.7-v{0}'
             Dependencies = @(
                 '[Bannerlord.Harmony](https://www.nexusmods.com/mountandblade2bannerlord/mods/2006) `v2.4.2`'
-                'Optional: [Mod Configuration Menu](https://www.nexusmods.com/mountandblade2bannerlord/mods/612) `v5.11.4+`'
+                '[Mod Configuration Menu](https://www.nexusmods.com/mountandblade2bannerlord/mods/612) `v5.11.4+` (required)'
+            )
+            DependencyNotes = @(
+                'Mod Configuration Menu is intentionally required to preserve the original mod configuration experience.'
             )
             Upstreams = @(
-                '[Original Captivity Events by TheBadListener](https://www.nexusmods.com/mountandblade2bannerlord/mods/1226)'
+                '[Original Captivity Events by BadListener, uploaded by TheBadListener](https://www.nexusmods.com/mountandblade2bannerlord/mods/1226)'
             )
         }
     }
@@ -110,6 +120,10 @@ $lines.Add('')
 $lines.Add('- **Game version:** [Mount & Blade II: Bannerlord](https://www.taleworlds.com/en/Games/Bannerlord) `v1.4.7`')
 foreach ($dependency in $metadata.Dependencies) {
     $lines.Add("- $dependency")
+}
+foreach ($dependencyNote in $metadata.DependencyNotes) {
+    $lines.Add('')
+    $lines.Add("> $dependencyNote")
 }
 $lines.Add('')
 $lines.Add("> Only direct mod dependencies are listed. Follow each linked project for any additional requirements. Bannerlord's standard game modules ship with the game.")
